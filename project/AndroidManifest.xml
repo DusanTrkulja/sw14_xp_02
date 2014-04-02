@@ -3,7 +3,6 @@
     package="com.github.sw14_xp_02"
     android:versionCode="1"
     android:versionName="1.0" >
- <!--  comment -->
     <uses-sdk
         android:minSdkVersion="15"
         android:targetSdkVersion="18" />
