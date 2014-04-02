@@ -8,7 +8,5 @@
     <string name="login_label">E-mail address:</string>
     <string name="password_label">Password:</string>
     <string name="login_button">Login</string>
-    <string name="title_activity_chat">ChatActivity</string>
-    <string name="send_button">Send</string>
 
 </resources>
