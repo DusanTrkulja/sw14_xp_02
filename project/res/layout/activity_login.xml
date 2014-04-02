@@ -72,6 +72,12 @@
         android:layout_marginRight="28dp"
         android:text="@string/login_button" />
 
-
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/email_edit"
+        android:layout_toLeftOf="@+id/user_login_text"
+        android:src="@drawable/whisper2" />
 
 </RelativeLayout>
