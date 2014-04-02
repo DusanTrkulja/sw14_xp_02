@@ -35,5 +35,16 @@ public class GUItestLogin extends ActivityInstrumentationTestCase2<LoginActivity
 		LoginSolo.typeText(1, "password");
 		LoginSolo.getText("password");
 	}
+	
+	public void testLogin() {
+		LoginSolo.clickOnEditText(0);
+		LoginSolo.typeText(0, "admin");
+		LoginSolo.getText("admin");
+		LoginSolo.clickOnEditText(1);
+		LoginSolo.typeText(1, "admin");
+		LoginSolo.getText("admin");
+		LoginSolo.sleep(500);
+		LoginSolo.getText("Redirecting");
+	}
 
 }
