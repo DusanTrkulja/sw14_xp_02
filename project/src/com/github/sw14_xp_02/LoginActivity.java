@@ -2,6 +2,7 @@ package com.github.sw14_xp_02;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -59,6 +60,9 @@ public class LoginActivity extends Activity implements OnClickListener{
 	      password.getText().toString().equals("admin")){
 	      Toast.makeText(getApplicationContext(), "Redirecting...", 
 	      Toast.LENGTH_SHORT).show();
+	      Intent intent = new Intent(getApplicationContext(), ChatActivity.class);
+	      startActivity(intent);
+	      
 	   }	
 	   else{
 	      Toast.makeText(getApplicationContext(), "Wrong Credentials",

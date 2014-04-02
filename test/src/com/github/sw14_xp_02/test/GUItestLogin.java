@@ -22,9 +22,9 @@ public class GUItestLogin extends ActivityInstrumentationTestCase2<LoginActivity
 		super.tearDown();
 	}
 	
-	public void testButtons(){
+	public void testButton(){
 		LoginSolo.clickOnButton("Login");
-		LoginSolo.clickOnButton("Register");
+
 	}
 	
 	public void testInputFields() {
@@ -46,6 +46,8 @@ public class GUItestLogin extends ActivityInstrumentationTestCase2<LoginActivity
 		LoginSolo.clickOnButton("Login");
 		LoginSolo.sleep(500);
 		LoginSolo.getText("Redirecting");
+		LoginSolo.sleep(500);
+		LoginSolo.getText("Send");
 	}
 
 }
