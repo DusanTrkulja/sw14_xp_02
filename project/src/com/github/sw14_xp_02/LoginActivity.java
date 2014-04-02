@@ -43,9 +43,18 @@ public class LoginActivity extends Activity implements OnClickListener{
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
+		
+		Button clicked = (Button) v;
+		if (clicked.getId() == this.login.getId())
+		{
+			login();
+		}
+		
+		
+		
 	}
 	
-	 public void login(View view){
+	 public void login(){
 	      if(email.getText().toString().equals("admin") && 
 	      password.getText().toString().equals("admin")){
 	      Toast.makeText(getApplicationContext(), "Redirecting...", 
