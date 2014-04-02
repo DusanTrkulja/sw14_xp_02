@@ -24,7 +24,6 @@ public class GUItestLogin extends ActivityInstrumentationTestCase2<LoginActivity
 	
 	public void testButtons(){
 		LoginSolo.clickOnButton("Login");
-		LoginSolo.clickOnButton("Register");
 	}
 	
 	public void testInputFields() {
