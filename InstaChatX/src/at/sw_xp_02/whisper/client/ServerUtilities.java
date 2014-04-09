@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.appsrox.instachat.client;
+package at.sw_xp_02.whisper.client;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -27,9 +27,8 @@ import java.util.Map.Entry;
 import java.util.Random;
 
 import android.util.Log;
-
-import com.appsrox.instachat.Common;
-import com.appsrox.instachat.DataProvider;
+import at.sw_xp_02.whisper.Common;
+import at.sw_xp_02.whisper.DataProvider;
 
 /**
  * Helper class used to communicate with the demo server.

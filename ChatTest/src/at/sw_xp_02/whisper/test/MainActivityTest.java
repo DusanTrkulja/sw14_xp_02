@@ -1,10 +1,9 @@
-package com.appsrox.instachat.test;
+package at.sw_xp_02.whisper.test;
 
-import junit.framework.Assert;
 import android.test.ActivityInstrumentationTestCase2;
+import at.sw_xp_02.whisper.MainActivity;
+import at.sw_xp_02.whisper.SettingsActivity;
 
-import com.appsrox.instachat.MainActivity;
-import com.appsrox.instachat.SettingsActivity;
 import com.robotium.solo.Solo;
 
 public class MainActivityTest extends
@@ -20,13 +19,14 @@ ActivityInstrumentationTestCase2<MainActivity> {
 		solo = new Solo(getInstrumentation(), getActivity());
 	}
 
-	public void testPreferenceActivity() throws Exception {
+	public void testPreferenceActivity() {
 
 		solo.sendKey(Solo.MENU);
 		solo.clickOnMenuItem("Settings");
 		solo.assertCurrentActivity("SettingsActivity", SettingsActivity.class);
 
 	}
+
 
 	@Override
 	public void tearDown() throws Exception {

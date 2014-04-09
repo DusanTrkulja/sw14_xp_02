@@ -1,4 +1,4 @@
-package com.appsrox.instachat;
+package at.sw_xp_02.whisper;
 
 import android.content.ContentProvider;
 import android.content.ContentUris;
@@ -13,8 +13,8 @@ import android.net.Uri;
 
 public class DataProvider extends ContentProvider {
 
-	public static final Uri CONTENT_URI_MESSAGES = Uri.parse("content://com.appsrox.instachat.provider/messages");
-	public static final Uri CONTENT_URI_PROFILE = Uri.parse("content://com.appsrox.instachat.provider/profile");
+	public static final Uri CONTENT_URI_MESSAGES = Uri.parse("content://at.sw_xp_02.whisper.provider/messages");
+	public static final Uri CONTENT_URI_PROFILE = Uri.parse("content://at.sw_xp_02.whisper.provider/profile");
 
 	public static final String COL_ID = "_id";
 
@@ -53,10 +53,10 @@ public class DataProvider extends ContentProvider {
 	private static final UriMatcher uriMatcher;
 	static {
 		uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-		uriMatcher.addURI("com.appsrox.instachat.provider", "messages", MESSAGES_ALLROWS);
-		uriMatcher.addURI("com.appsrox.instachat.provider", "messages/#", MESSAGES_SINGLE_ROW);
-		uriMatcher.addURI("com.appsrox.instachat.provider", "profile", PROFILE_ALLROWS);
-		uriMatcher.addURI("com.appsrox.instachat.provider", "profile/#", PROFILE_SINGLE_ROW);
+		uriMatcher.addURI("at.sw_xp_02.whisper.provider", "messages", MESSAGES_ALLROWS);
+		uriMatcher.addURI("at.sw_xp_02.whisper.provider", "messages/#", MESSAGES_SINGLE_ROW);
+		uriMatcher.addURI("at.sw_xp_02.whisper.provider", "profile", PROFILE_ALLROWS);
+		uriMatcher.addURI("at.sw_xp_02.whisper.provider", "profile/#", PROFILE_SINGLE_ROW);
 	}
 
 	@Override

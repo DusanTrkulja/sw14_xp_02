@@ -1,4 +1,4 @@
-package com.appsrox.instachat.client;
+package at.sw_xp_02.whisper.client;
 
 import java.io.IOException;
 import java.sql.Timestamp;
@@ -12,8 +12,8 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import at.sw_xp_02.whisper.Common;
 
-import com.appsrox.instachat.Common;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 public class GcmUtil {

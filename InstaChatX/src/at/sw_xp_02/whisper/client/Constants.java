@@ -1,4 +1,4 @@
-package com.appsrox.instachat.client;
+package at.sw_xp_02.whisper.client;
 
 public interface Constants {
 

@@ -1,4 +1,4 @@
-package com.appsrox.instachat;
+package at.sw_xp_02.whisper;
 
 import java.io.IOException;
 
@@ -21,11 +21,9 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
-import com.appsrox.instachat.DataProvider.MessageType;
-import com.appsrox.instachat.client.GcmUtil;
-import com.appsrox.instachat.client.ServerUtilities;
-import com.appsrox.instachat.R;
+import at.sw_xp_02.whisper.DataProvider.MessageType;
+import at.sw_xp_02.whisper.client.GcmUtil;
+import at.sw_xp_02.whisper.client.ServerUtilities;
 
 public class ChatActivity extends ActionBarActivity implements MessagesFragment.OnFragmentInteractionListener, 
 EditContactDialog.OnFragmentInteractionListener, OnClickListener {

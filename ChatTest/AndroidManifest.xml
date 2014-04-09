@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.appsrox.instachat.test"
+    package="at.sw_xp_02.whisper.test"
     android:versionCode="1"
     android:versionName="1.0" >
 
-    <uses-sdk android:minSdkVersion="9" />
+    <uses-sdk android:minSdkVersion="9" android:targetSdkVersion="18" />
 
     <instrumentation
         android:name="android.test.InstrumentationTestRunner"
-        android:targetPackage="com.appsrox.instachat" />
+        android:targetPackage="at.sw_xp_02.whisper" />
 
     <application
         android:icon="@drawable/ic_launcher"

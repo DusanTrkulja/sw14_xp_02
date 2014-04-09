@@ -1,4 +1,4 @@
-package com.appsrox.instachat.client;
+package at.sw_xp_02.whisper.client;
 
 import android.app.Activity;
 import android.app.NotificationManager;
@@ -12,12 +12,12 @@ import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
+import at.sw_xp_02.whisper.Common;
+import at.sw_xp_02.whisper.DataProvider;
+import at.sw_xp_02.whisper.DataProvider.MessageType;
+import at.sw_xp_02.whisper.MainActivity;
+import at.sw_xp_02.whisper.R;
 
-import com.appsrox.instachat.Common;
-import com.appsrox.instachat.DataProvider;
-import com.appsrox.instachat.DataProvider.MessageType;
-import com.appsrox.instachat.MainActivity;
-import com.appsrox.instachat.R;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 public class GcmBroadcastReceiver extends BroadcastReceiver {

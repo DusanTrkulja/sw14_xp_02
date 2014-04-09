@@ -1,4 +1,4 @@
-package com.appsrox.instachat;
+package at.sw_xp_02.whisper;
 
 import android.app.AlertDialog;
 import android.app.Dialog;

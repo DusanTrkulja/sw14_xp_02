@@ -1,4 +1,4 @@
-package com.appsrox.instachat;
+package at.sw_xp_02.whisper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,13 +9,12 @@ import android.app.Application;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Patterns;
-
-import com.appsrox.instachat.client.Constants;
+import at.sw_xp_02.whisper.client.Constants;
 
 public class Common extends Application {
 	
 	public static final String PROFILE_ID = "profile_id";
-	public static final String ACTION_REGISTER = "com.appsrox.instachat.REGISTER";
+	public static final String ACTION_REGISTER = "at.sw_xp_02.whisper.REGISTER";
 	public static final String EXTRA_STATUS = "status";
 	public static final int STATUS_SUCCESS = 1;
 	public static final int STATUS_FAILED = 0;
