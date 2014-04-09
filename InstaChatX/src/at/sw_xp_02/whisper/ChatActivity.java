@@ -2,6 +2,9 @@ package at.sw_xp_02.whisper;
 
 import java.io.IOException;
 
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.SherlockActivity;
+
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -11,8 +14,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,7 +26,7 @@ import at.sw_xp_02.whisper.DataProvider.MessageType;
 import at.sw_xp_02.whisper.client.GcmUtil;
 import at.sw_xp_02.whisper.client.ServerUtilities;
 
-public class ChatActivity extends ActionBarActivity implements MessagesFragment.OnFragmentInteractionListener, 
+public class ChatActivity extends SherlockActivity implements MessagesFragment.OnFragmentInteractionListener, 
 EditContactDialog.OnFragmentInteractionListener, OnClickListener {
 
 	private EditText msgEdit;
@@ -59,7 +60,7 @@ EditContactDialog.OnFragmentInteractionListener, OnClickListener {
 		registerReceiver(registrationStatusReceiver, new IntentFilter(Common.ACTION_REGISTER));
 		gcmUtil = new GcmUtil(getApplicationContext());
 	}
-
+/*
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -87,6 +88,8 @@ EditContactDialog.OnFragmentInteractionListener, OnClickListener {
 		}
 		return super.onOptionsItemSelected(item);
 	}
+	
+	*/
 
 	@Override
 	public void onClick(View v) {

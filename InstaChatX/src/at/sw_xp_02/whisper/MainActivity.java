@@ -1,7 +1,13 @@
 package at.sw_xp_02.whisper;
 
+import com.actionbarsherlock.ActionBarSherlock;
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.SherlockActivity;
+
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.LoaderManager.LoaderCallbacks;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
@@ -14,8 +20,6 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,7 +31,10 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class MainActivity extends ActionBarActivity implements LoaderManager.LoaderCallbacks<Cursor>, OnItemClickListener {
+public class MainActivity extends SherlockActivity implements LoaderManager.LoaderCallbacks<Cursor>, OnItemClickListener {
+	
+
+
 	private AlertDialog disclaimer;
 	ListView listView;
 	private ActionBar actionBar;
@@ -61,9 +68,10 @@ public class MainActivity extends ActionBarActivity implements LoaderManager.Loa
 //			}
 //		});
 		
-		getSupportLoaderManager().initLoader(0, null, this);
+		//getLoaderManager().initLoader(0, null, this);
 	}
 
+	/*
 	@Override
     public boolean onCreateOptionsMenu (Menu menu) {
     	getMenuInflater().inflate(R.menu.main, menu);
@@ -84,6 +92,7 @@ public class MainActivity extends ActionBarActivity implements LoaderManager.Loa
 		}
 		return super.onOptionsItemSelected(item);
 	}
+	*/
 	
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View view, int arg2, long arg3) {

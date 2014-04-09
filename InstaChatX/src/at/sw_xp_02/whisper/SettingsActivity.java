@@ -2,6 +2,8 @@ package at.sw_xp_02.whisper;
 
 import java.util.List;
 
+import com.actionbarsherlock.app.SherlockPreferenceActivity;
+
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.Configuration;
@@ -30,7 +32,7 @@ import android.text.TextUtils;
  * href="http://developer.android.com/guide/topics/ui/settings.html">Settings
  * API Guide</a> for more information on developing a Settings UI.
  */
-public class SettingsActivity extends PreferenceActivity {
+public class SettingsActivity extends SherlockPreferenceActivity {
 	/**
 	 * Determines whether to always show the simplified settings UI, where
 	 * settings are presented in a single list. When false, settings are shown

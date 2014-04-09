@@ -5,6 +5,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import com.actionbarsherlock.app.SherlockListFragment;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ContentResolver;
@@ -35,7 +37,7 @@ import android.widget.TextView;
  * Activities containing this fragment MUST implement the {@link Callbacks}
  * interface.
  */
-public class MessagesFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class MessagesFragment extends SherlockListFragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
 	private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	private static final DateFormat[] df = new DateFormat[] {
