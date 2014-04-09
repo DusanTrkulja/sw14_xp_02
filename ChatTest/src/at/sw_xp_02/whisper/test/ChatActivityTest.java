@@ -1,35 +1,33 @@
 package at.sw_xp_02.whisper.test;
 
-import android.content.Intent;
-import android.widget.Button;
-import android.widget.EditText;
+import android.test.ActivityInstrumentationTestCase2;
 import at.sw_xp_02.whisper.ChatActivity;
-import at.sw_xp_02.whisper.R;
+import at.sw_xp_02.whisper.MainActivity;
 
-public class ChatTest extends
-    android.test.ActivityUnitTestCase<ChatActivity> {
+import com.robotium.solo.Solo;
 
-  private ChatActivity activity;
-  private EditText msgEdit;
-  private Button sendBtn;
+public class ChatActivityTest extends
+ActivityInstrumentationTestCase2<ChatActivity> {
 
-  public ChatTest() {
-    super(ChatActivity.class);
-  }
-  
-  public void testSendButton() {
-	  
-  }
+	private Solo solo;
 
-  @Override
-  protected void setUp() throws Exception {
-    super.setUp();
-    Intent intent = new Intent(getInstrumentation().getTargetContext(),
-    		ChatActivity.class);
-    startActivity(intent, null, null);
-    activity = getActivity();
-	msgEdit = (EditText) activity.findViewById(R.id.msg_edit);
-	sendBtn = (Button) activity.findViewById(R.id.send_btn);
-  }
+	public ChatActivityTest() {
+		super(ChatActivity.class);
+	}
 
-} 
+	public void setUp() throws Exception {
+		solo = new Solo(getInstrumentation(), getActivity());
+	}
+
+	public void testSendButton() {
+
+//		solo.clickOnButton("Send");
+
+	}
+
+
+	@Override
+	public void tearDown() throws Exception {
+		solo.finishOpenedActivities();
+	}
+}
