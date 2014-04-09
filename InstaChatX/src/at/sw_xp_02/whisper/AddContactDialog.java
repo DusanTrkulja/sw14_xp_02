@@ -6,7 +6,7 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.database.SQLException;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
+import android.app.DialogFragment;
 import android.text.InputType;
 import android.view.View;
 import android.widget.Button;

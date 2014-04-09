@@ -1,13 +1,8 @@
 package at.sw_xp_02.whisper;
 
-import com.actionbarsherlock.ActionBarSherlock;
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockActivity;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.LoaderManager.LoaderCallbacks;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
@@ -20,8 +15,10 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,13 +28,16 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class MainActivity extends SherlockActivity implements LoaderManager.LoaderCallbacks<Cursor>, OnItemClickListener {
+import com.actionbarsherlock.app.ActionBar;
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
+
+public class MainActivity extends Activity implements LoaderManager.LoaderCallbacks<Cursor>, OnItemClickListener {
 	
 
 
 	private AlertDialog disclaimer;
 	ListView listView;
-	private ActionBar actionBar;
+	private android.app.ActionBar actionBar;
 	private ContactCursorAdapter ContactCursorAdapter;
 	public static PhotoCache photoCache;
 	@Override
@@ -48,13 +48,25 @@ public class MainActivity extends SherlockActivity implements LoaderManager.Load
 		listView.setOnItemClickListener(this);
 		ContactCursorAdapter = new ContactCursorAdapter(this, null);
 		listView.setAdapter(ContactCursorAdapter);
-		actionBar = getSupportActionBar();
+		actionBar = getActionBar();
 		actionBar.setDisplayShowTitleEnabled(true);
 		actionBar.show();		
 		photoCache = new PhotoCache(this);
 		actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME, ActionBar.DISPLAY_SHOW_CUSTOM);
 		actionBar.setTitle("You are");
 	    actionBar.setSubtitle(Common.getPreferredEmail());
+	    
+	    SlidingMenu menu = new SlidingMenu(this);
+        menu.setMode(SlidingMenu.LEFT_RIGHT);
+        menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+        menu.setShadowWidthRes(R.dimen.shadow_width);
+        menu.setShadowDrawable(R.drawable.shadow);
+        menu.setSecondaryShadowDrawable(R.drawable.shadow);
+        menu.setBehindOffsetRes(R.dimen.slidingmenu_offset);
+        menu.setFadeDegree(0.35f);
+        menu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
+        menu.setMenu(R.layout.menu);
+        menu.setSecondaryMenu(R.layout.menu);
 	    
 //		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
 //		
@@ -71,20 +83,26 @@ public class MainActivity extends SherlockActivity implements LoaderManager.Load
 		//getLoaderManager().initLoader(0, null, this);
 	}
 
-	/*
+	
 	@Override
-    public boolean onCreateOptionsMenu (Menu menu) {
-    	getMenuInflater().inflate(R.menu.main, menu);
-    	return super.onCreateOptionsMenu(menu);
-    }
+	public boolean onCreateOptionsMenu(Menu menu) {
+	    super.onCreateOptionsMenu(menu);
+	    MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.main, menu);
+	    return true;
+	}
+
+    
     
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
+		
 		case R.id.action_add:
 			AddContactDialog newFragment = AddContactDialog.newInstance();
-			newFragment.show(getSupportFragmentManager(), "AddContactDialog");
+			newFragment.show(getFragmentManager(), "AddContactDialog");
 			return true;
+			
 		case R.id.action_settings:
 			Intent intent = new Intent(this, SettingsActivity.class);
 			startActivity(intent);
@@ -92,7 +110,7 @@ public class MainActivity extends SherlockActivity implements LoaderManager.Load
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	*/
+	
 	
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View view, int arg2, long arg3) {
