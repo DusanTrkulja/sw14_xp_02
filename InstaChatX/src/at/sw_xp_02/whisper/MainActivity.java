@@ -1,5 +1,7 @@
 package at.sw_xp_02.whisper;
 
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
+
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
@@ -36,6 +38,7 @@ public class MainActivity extends ActionBarActivity implements LoaderManager.Loa
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
 		setContentView(R.layout.activity_main);
 		listView = (ListView) findViewById(R.id.contactslist);
 		listView.setOnItemClickListener(this);
@@ -48,6 +51,11 @@ public class MainActivity extends ActionBarActivity implements LoaderManager.Loa
 		actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME, ActionBar.DISPLAY_SHOW_CUSTOM);
 		actionBar.setTitle("You are");
 	    actionBar.setSubtitle(Common.getPreferredEmail());
+	    
+	    
+
+        
+  
 	    
 //		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
 //		

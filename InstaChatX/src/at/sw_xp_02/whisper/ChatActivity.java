@@ -2,6 +2,8 @@ package at.sw_xp_02.whisper;
 
 import java.io.IOException;
 
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
+
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -20,8 +22,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Toast;
 import at.sw_xp_02.whisper.DataProvider.MessageType;
+import at.sw_xp_02.whisper.MainActivity.ContactCursorAdapter;
 import at.sw_xp_02.whisper.client.GcmUtil;
 import at.sw_xp_02.whisper.client.ServerUtilities;
 
@@ -34,6 +38,9 @@ EditContactDialog.OnFragmentInteractionListener, OnClickListener {
 	private String profileName;
 	private String profileEmail;
 	private GcmUtil gcmUtil;
+	ListView listView;
+	private ContactCursorAdapter ContactCursorAdapter;
+	public static PhotoCache photoCache;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +54,32 @@ EditContactDialog.OnFragmentInteractionListener, OnClickListener {
 		ActionBar actionBar = getSupportActionBar();
 		actionBar.setHomeButtonEnabled(true);
 		actionBar.setDisplayHomeAsUpEnabled(true);
+	    
+	   
+		
+		 // configure the SlidingMenu
+        SlidingMenu menu = new SlidingMenu(this);
+        menu.setMode(SlidingMenu.RIGHT);
+        menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+        menu.setShadowWidthRes(R.dimen.shadow_width);
+        //menu.setShadowDrawable(R.drawable.shadow);
+        menu.setBehindOffsetRes(R.dimen.slidingmenu_offset);
+        //menu.setFadeDegree(0.35f);
+        menu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
+        menu.setMenu(R.layout.menu);
+        
+		//listView = (ListView) findViewById(R.id.contactslist);
+		//listView.setOnItemClickListener(this);
+		//ContactCursorAdapter = new ContactCursorAdapter(this, null);
+		//listView.setAdapter(ContactCursorAdapter);
+		//actionBar = getSupportActionBar();
+		//actionBar.setDisplayShowTitleEnabled(true);
+		//actionBar.show();		
+		//photoCache = new PhotoCache(this);
+		//actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME, ActionBar.DISPLAY_SHOW_CUSTOM);
+		//actionBar.setTitle("You are");
+	    //actionBar.setSubtitle(Common.getPreferredEmail());
+        
 
 		Cursor c = getContentResolver().query(Uri.withAppendedPath(DataProvider.CONTENT_URI_PROFILE, profileId), null, null, null, null);
 		if (c.moveToFirst()) {
