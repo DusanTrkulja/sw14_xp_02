@@ -31,7 +31,6 @@ ActivityInstrumentationTestCase2<MainActivity> {
 	    solo.clickOnActionBarItem(R.id.action_add);
         solo.typeText(0, email);
         solo.clickOnButton(1);
-        solo.clickOnText(email);
 	}
 
 	public void testPreferenceActivity() {

@@ -16,18 +16,21 @@ import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class MainActivity extends ActionBarActivity implements LoaderManager.LoaderCallbacks<Cursor>, OnItemClickListener {
+public class MainActivity extends ActionBarActivity implements LoaderManager.LoaderCallbacks<Cursor>, OnItemClickListener, OnItemLongClickListener {
 	private AlertDialog disclaimer;
 	ListView listView;
 	private ActionBar actionBar;
@@ -39,6 +42,7 @@ public class MainActivity extends ActionBarActivity implements LoaderManager.Loa
 		setContentView(R.layout.activity_main);
 		listView = (ListView) findViewById(R.id.contactslist);
 		listView.setOnItemClickListener(this);
+		listView.setOnItemLongClickListener(this);
 		ContactCursorAdapter = new ContactCursorAdapter(this, null);
 		listView.setAdapter(ContactCursorAdapter);
 		actionBar = getSupportActionBar();
@@ -48,7 +52,8 @@ public class MainActivity extends ActionBarActivity implements LoaderManager.Loa
 		actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME, ActionBar.DISPLAY_SHOW_CUSTOM);
 		actionBar.setTitle("You are");
 	    actionBar.setSubtitle(Common.getPreferredEmail());
-	    
+	    registerForContextMenu(listView);
+
 //		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
 //		
 //		ArrayAdapter<CharSequence> dropdownAdapter = ArrayAdapter.createFromResource(this, R.array.dropdown_arr, android.R.layout.simple_list_item_1);
@@ -91,7 +96,30 @@ public class MainActivity extends ActionBarActivity implements LoaderManager.Loa
 		intent.putExtra(Common.PROFILE_ID, String.valueOf(arg3));
 		startActivity(intent);
 	}
-	
+
+    private long id;
+
+	@Override
+	public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+	    this.id = id;
+	    openContextMenu(findViewById(R.id.contactslist));
+	    return true;
+	}
+
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+        getMenuInflater().inflate(R.menu.context_menu, menu);
+        super.onCreateContextMenu(menu, v, menuInfo);
+	}
+
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+	    String[] array = {String.valueOf(this.id)};
+	    getContentResolver().delete(DataProvider.CONTENT_URI_PROFILE, "_id=?", array);
+        ContactCursorAdapter.notifyDataSetChanged();
+	    return super.onContextItemSelected(item);
+	}
+
 	@Override
 	protected void onDestroy() {
 		if (disclaimer != null) 
