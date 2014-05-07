@@ -1,6 +1,5 @@
 package at.sw_xp_02.whisper.test;
 
-import android.support.v4.app.Fragment;
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.EditText;
 import at.sw_xp_02.whisper.ChatActivity;
@@ -15,7 +14,6 @@ ActivityInstrumentationTestCase2<MainActivity> {
 
 	private Solo solo;
 	private EditText message;
-	private android.app.Fragment fragment;
 
 	public MainActivityTest() {
 		super(MainActivity.class);
@@ -27,6 +25,13 @@ ActivityInstrumentationTestCase2<MainActivity> {
 //		solo.typeText(0, "strass.michael@gmx.net");
 //		solo.clickOnButton(1);
 //		solo.clickOnText("strass.michael@gmx.net");
+	}
+
+	private void addDummyUser(String email) {
+	    solo.clickOnActionBarItem(R.id.action_add);
+        solo.typeText(0, email);
+        solo.clickOnButton(1);
+        solo.clickOnText(email);
 	}
 
 	public void testPreferenceActivity() {
@@ -57,6 +62,15 @@ ActivityInstrumentationTestCase2<MainActivity> {
 		solo.clickOnButton("Send");
 		solo.waitForText("Message could not be sent");
 	}
+
+    public void testDeleteUser() {
+        String user = "dummy@dum.dum";
+
+        addDummyUser(user);
+        solo.clickLongOnText(user);
+        solo.clickOnText("Delete");
+        assert(!solo.searchText(user));
+    }
 
 	@Override
 	public void tearDown() throws Exception {
