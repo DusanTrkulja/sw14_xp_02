@@ -134,7 +134,12 @@ EditContactDialog.OnFragmentInteractionListener, OnClickListener {
 	public void onClick(View v) {
 		switch(v.getId()) {
 		case R.id.send_btn:
-			send(msgEdit.getText().toString());
+			String sendText = msgEdit.getText().toString();
+			if(sendText.isEmpty()) {
+				break;
+			}
+				
+			send(sendText);
 			msgEdit.setText(null);
 			break;
 		}
