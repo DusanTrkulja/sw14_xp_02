@@ -1,6 +1,7 @@
 package at.sw_xp_02.whisper.client;
 
 import android.app.Activity;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -70,7 +71,9 @@ public class GcmBroadcastReceiver extends BroadcastReceiver {
 		notification.setContentTitle(ctx.getString(R.string.app_name));
 		notification.setContentText(text);
 		notification.setAutoCancel(true);
-		notification.setSmallIcon(R.drawable.ic_launcher);
+		notification.setSmallIcon(R.drawable.logo);
+		notification.getNotification().flags |= Notification.FLAG_AUTO_CANCEL;
+		
 		if (!TextUtils.isEmpty(Common.getRingtone())) {
 			notification.setSound(Uri.parse(Common.getRingtone()));
 		}
