@@ -12,4 +12,6 @@ public interface Constants {
      * Google API project id registered to use GCM.
      */
 	String SENDER_ID = "905468364069";
+	
+	String STAY_ON_MAINSCREEN = "stayOnMainScreen";
 }

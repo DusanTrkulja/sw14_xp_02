@@ -37,6 +37,7 @@ import android.widget.TextView;
  */
 public class MessagesFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
+	@SuppressLint("SimpleDateFormat")
 	private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	private static final DateFormat[] df = new DateFormat[] {
 		DateFormat.getDateInstance(), DateFormat.getTimeInstance()};
@@ -86,6 +87,7 @@ public class MessagesFragment extends ListFragment implements LoaderManager.Load
 		public String getProfileEmail();
 	}
 
+	@SuppressWarnings("deprecation")
 	private String getDisplayTime(String datetime) {
 		try {
 			Date dt = sdf.parse(datetime);

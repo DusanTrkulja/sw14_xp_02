@@ -20,42 +20,67 @@ public class SlidingMenuFragment extends ListFragment {
 
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		SampleAdapter adapter = new SampleAdapter(getActivity());
-		
-		adapter.add(new SampleItem("Contacts", android.R.drawable.ic_menu_search));
-		//adapter.addAll(R.id.contactslist);
-		//listView = (ListView) findViewById(R.id.contactslist);
-		//listView.setOnItemClickListener(this);
-		
+		String profileId = getActivity().getIntent().getStringExtra(Common.PROFILE_ID);
+		Cursor c = getActivity().getContentResolver().query(DataProvider.CONTENT_URI_PROFILE,null,DataProvider.COL_ID + " != ?",new String[] { profileId },null);
+		ContactCursorAdapter adapter = new ContactCursorAdapter(getActivity(),getActivity().getBaseContext(),c);
+		getListView().setOnItemClickListener(this);
 		setListAdapter(adapter);
+		
 	}
 
-	private class SampleItem {
-		public String tag;
-		public int iconRes;
-		public SampleItem(String tag, int iconRes) {
-			this.tag = tag; 
-			this.iconRes = iconRes;
-		}
-	}
+	
+	public class ContactCursorAdapter extends CursorAdapter {
 
-	public class SampleAdapter extends ArrayAdapter<SampleItem> {
+		private LayoutInflater mInflater;
 
-		public SampleAdapter(Context context) {
-			super(context, 0);
+		public ContactCursorAdapter(Activity activity,Context context, Cursor c) {
+			super(context, c, 0);
+			this.mInflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		}
 
-		public View getView(int position, View convertView, ViewGroup parent) {
-			if (convertView == null) {
-				convertView = LayoutInflater.from(getContext()).inflate(R.layout.row, null);
+		@Override public int getCount() {
+			return getCursor() == null ? 0 : super.getCount();
+		}
+
+		@Override
+		public View newView(Context context, Cursor cursor, ViewGroup parent) {
+			View itemLayout = mInflater.inflate(R.layout.row, parent, false);
+			ViewHolder holder = new ViewHolder();
+			itemLayout.setTag(holder);
+			holder.icon = (ImageView) itemLayout.findViewById(R.id.row_icon);
+			holder.title = (TextView) itemLayout.findViewById(R.id.row_title);
+			return itemLayout;
+		}
+
+		@Override
+		public void bindView(View view, Context context, Cursor cursor) {
+			ViewHolder holder = (ViewHolder) view.getTag();
+			holder.icon.setImageResource(R.drawable.ic_contact_picture);
+			holder.title.setText(cursor.getString(cursor.getColumnIndex(DataProvider.COL_NAME)));
+			int count = cursor.getInt(cursor.getColumnIndex(DataProvider.COL_COUNT));
+			if(count > 0) {
+			holder.badge = new BadgeView(getActivity(), holder.icon);
+			holder.badge.setTextColor(Color.BLACK);
+			holder.badge.setText(""+count);
+			
+			holder.badge.show();
 			}
-			ImageView icon = (ImageView) convertView.findViewById(R.id.row_icon);
-			icon.setImageResource(getItem(position).iconRes);
-			TextView title = (TextView) convertView.findViewById(R.id.row_title);
-			title.setText(getItem(position).tag);
-
-			return convertView;
 		}
-
 	}
+
+	private static class ViewHolder {
+		ImageView icon;
+		TextView title;
+		BadgeView badge;
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+		Intent intent = new Intent(getActivity(), ChatActivity.class);
+		intent.putExtra(Common.PROFILE_ID, String.valueOf(arg3));
+		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		startActivity(intent);
+		
+	}
+
 }
