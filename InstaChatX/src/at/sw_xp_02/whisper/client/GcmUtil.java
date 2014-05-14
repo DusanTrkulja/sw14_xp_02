@@ -36,6 +36,7 @@ public class GcmUtil {
     private Context ctx;
 	private SharedPreferences prefs;
 	private GoogleCloudMessaging gcm;
+	@SuppressWarnings("rawtypes")
 	private AsyncTask registrationTask;
 
 	public GcmUtil(Context applicationContext) {

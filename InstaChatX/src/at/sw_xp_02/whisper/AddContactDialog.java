@@ -11,6 +11,7 @@ import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class AddContactDialog extends DialogFragment {
 	private AlertDialog alertDialog;
@@ -44,6 +45,11 @@ public class AddContactDialog extends DialogFragment {
 					@Override
 					public void onClick(View v) {
 						String email = et.getText().toString();
+						if(email.equals(Common.getPreferredEmail())) {
+							Toast.makeText(AddContactDialog.this.getActivity(), "You cannot add yourself.", Toast.LENGTH_LONG).show();
+							alertDialog.dismiss();
+							return;
+						}
 						if (!isEmailValid(email)) {
 							et.setError("Invalid email!");
 							return;

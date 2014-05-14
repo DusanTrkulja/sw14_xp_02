@@ -106,8 +106,9 @@ public class DataProvider extends ContentProvider {
 		switch(uriMatcher.match(uri)) {
 		case MESSAGES_ALLROWS:
 			id = db.insertOrThrow(TABLE_MESSAGES, null, values);
-			if (values.get(COL_RECEIVER_EMAIL) == null) {
-				db.execSQL("update profile set count = count+1 where email = ?", new Object[]{values.get(COL_SENDER_EMAIL)});
+			if (values.get(COL_RECEIVER_EMAIL) != null) {
+				// TODO:not sure about value that should be set for email
+				db.execSQL("update profile set count = count+1 where email = ?", new Object[]{values.get(COL_SENDER_EMAIL)}); 
 				getContext().getContentResolver().notifyChange(CONTENT_URI_PROFILE, null);
 			}
 			break;

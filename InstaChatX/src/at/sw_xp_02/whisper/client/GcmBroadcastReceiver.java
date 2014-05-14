@@ -1,6 +1,7 @@
 package at.sw_xp_02.whisper.client;
 
 import android.app.Activity;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -11,6 +12,7 @@ import android.net.Uri;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import at.sw_xp_02.whisper.Common;
 import at.sw_xp_02.whisper.DataProvider;
@@ -58,6 +60,9 @@ public class GcmBroadcastReceiver extends BroadcastReceiver {
 				if (Common.isNotify()) {
 					sendNotification("New message", true);
 				}
+				
+				Intent intent2 = new Intent("contactListRefresh");
+				LocalBroadcastManager.getInstance(context).sendBroadcast(intent2);
 			}
 			setResultCode(Activity.RESULT_OK);
 		} catch(Exception e) {
@@ -70,13 +75,16 @@ public class GcmBroadcastReceiver extends BroadcastReceiver {
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	private void sendNotification(String text, boolean launchApp) {
 		NotificationManager mNotificationManager = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
 		NotificationCompat.Builder notification = new NotificationCompat.Builder(ctx);
 		notification.setContentTitle(ctx.getString(R.string.app_name));
 		notification.setContentText(text);
 		notification.setAutoCancel(true);
-		notification.setSmallIcon(R.drawable.ic_launcher);
+		notification.setSmallIcon(R.drawable.logo);
+		notification.getNotification().flags |= Notification.FLAG_AUTO_CANCEL;
+		
 		if (!TextUtils.isEmpty(Common.getRingtone())) {
 			notification.setSound(Uri.parse(Common.getRingtone()));
 		}
