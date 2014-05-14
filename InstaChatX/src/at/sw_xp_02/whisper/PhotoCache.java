@@ -31,7 +31,6 @@ public class PhotoCache {
 
 	CacheMemory cacheMemory = new CacheMemory();
 
-	//FileCache fileCache; // TODO not used
 
 	private Map<ImageView, Uri> imageViewsMap = Collections.synchronizedMap(new WeakHashMap<ImageView, Uri>());
 
@@ -115,13 +114,7 @@ public class PhotoCache {
 	 * @return
 	 */
 	private Bitmap getBitmap(Uri uri) {
-		// check cache 
-		//File f = fileCache.getFile(uri); // TODO not used
-		// try and use the bitmap if it existed 
-		//		Bitmap bitmap = decodeFile(f);
-		//		if(bitmap != null)
-		//			return bitmap;
-		//from content resolver recourse 
+
 		Bitmap b;
 		try {
 			BufferedInputStream bufferedInputStream = new BufferedInputStream(context.getContentResolver().openInputStream(uri));

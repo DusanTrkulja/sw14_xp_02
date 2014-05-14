@@ -1,0 +1,4 @@
+include ':appcompat'
+include ':SlidingMenu-master:library'
+include ':google-play-services_lib'
+include ':InstaChatX'

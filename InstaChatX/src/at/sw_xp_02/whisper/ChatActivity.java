@@ -7,16 +7,15 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -42,14 +41,15 @@ EditContactDialog.OnFragmentInteractionListener, OnClickListener {
 	private String profileEmail;
 	private GcmUtil gcmUtil;
 	ListView listView;
-	private ContactCursorAdapter ContactCursorAdapter;
 	public static PhotoCache photoCache;
+	SlidingMenu menu;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.chat_activity);
 
+		
 		profileId = getIntent().getStringExtra(Common.PROFILE_ID);
 		msgEdit = (EditText) findViewById(R.id.msg_edit);
 		sendBtn = (Button) findViewById(R.id.send_btn);
@@ -61,7 +61,7 @@ EditContactDialog.OnFragmentInteractionListener, OnClickListener {
 	   
 		
 		 // configure the SlidingMenu
-        SlidingMenu menu = new SlidingMenu(this);
+        menu = new SlidingMenu(this);
         menu.setMode(SlidingMenu.RIGHT);
         menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
         menu.setShadowWidthRes(R.dimen.shadow_width);
@@ -84,6 +84,24 @@ EditContactDialog.OnFragmentInteractionListener, OnClickListener {
 		registerReceiver(registrationStatusReceiver, new IntentFilter(Common.ACTION_REGISTER));
 		gcmUtil = new GcmUtil(getApplicationContext());
 	}
+	
+	@Override 
+	public void onResume() {
+		super.onResume();
+		LocalBroadcastManager.getInstance(this).registerReceiver(contactListRefreshReceiver,
+			      new IntentFilter("contactListRefresh"));
+	}
+	
+	private BroadcastReceiver contactListRefreshReceiver = new BroadcastReceiver() {
+
+		@Override
+		public void onReceive(Context context, Intent arg1) {
+			menu.invalidate();
+	        menu.setMenu(R.layout.menu);
+			Log.e("ChatActivity","Data refresh");
+		}
+		
+	};
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -118,7 +136,12 @@ EditContactDialog.OnFragmentInteractionListener, OnClickListener {
 	public void onClick(View v) {
 		switch(v.getId()) {
 		case R.id.send_btn:
-			send(msgEdit.getText().toString());
+			String sendText = msgEdit.getText().toString();
+			if(sendText.isEmpty()) {
+				break;
+			}
+				
+			send(sendText);
 			msgEdit.setText(null);
 			break;
 		}
@@ -169,6 +192,7 @@ EditContactDialog.OnFragmentInteractionListener, OnClickListener {
 		ContentValues values = new ContentValues(1);
 		values.put(DataProvider.COL_COUNT, 0);
 		getContentResolver().update(Uri.withAppendedPath(DataProvider.CONTENT_URI_PROFILE, profileId), values, null, null);
+		 LocalBroadcastManager.getInstance(this).unregisterReceiver(contactListRefreshReceiver);
 		super.onPause();
 	}
 
@@ -197,4 +221,7 @@ EditContactDialog.OnFragmentInteractionListener, OnClickListener {
 		}
 	};	
 
+
+
 }
+
