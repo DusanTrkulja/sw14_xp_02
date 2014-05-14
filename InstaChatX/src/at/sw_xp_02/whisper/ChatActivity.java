@@ -95,7 +95,8 @@ EditContactDialog.OnFragmentInteractionListener, OnClickListener {
 
 		@Override
 		public void onReceive(Context context, Intent arg1) {
-			context.getContentResolver().notifyChange(DataProvider.CONTENT_URI_PROFILE, null);
+			menu.invalidate();
+	        menu.setMenu(R.layout.menu);
 			Log.e("ChatActivity","Data refresh");
 		}
 		
