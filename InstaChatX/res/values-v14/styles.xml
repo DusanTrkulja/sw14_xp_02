@@ -7,6 +7,21 @@
     -->
     <style name="AppBaseTheme" parent="@style/Theme.AppCompat.Light">
         <!-- API 14 theme customizations can go here. -->
+        <item name="android:actionBarStyle">@style/MyActionBarTheme</item>
+    </style>
+
+    <style name="MyActionBarTheme" parent="@android:style/Widget.Holo.Light.ActionBar">
+        <item name="android:background">#ff8800</item>
+        <item name="android:titleTextStyle">@style/MyThemeTitleTextStyle</item>
+        <item name="android:subtitleTextStyle">@style/MyThemesubTitleTextStyle</item>
+    </style>
+    
+    <style name="MyThemeTitleTextStyle" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
+        <item name="android:textColor">#ffffff</item>
+    </style>
+    
+    <style name="MyThemesubTitleTextStyle" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Subtitle">
+        <item name="android:textColor">#ffffff</item>
     </style>
 
 </resources>
