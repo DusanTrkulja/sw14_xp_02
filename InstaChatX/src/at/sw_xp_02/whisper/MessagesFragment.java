@@ -95,7 +95,7 @@ public class MessagesFragment extends ListFragment implements LoaderManager.Load
 			Date dt = sdf.parse(datetime);
 			Calendar cal = Calendar.getInstance();
 			TimeZone tz = cal.getTimeZone();
-			dt.setHours(dt.getHours()+tz.getRawOffset()/(1000*60*60));
+			dt.setHours(dt.getHours()+tz.getRawOffset()/(1000*60*60)+1);
 			if (now.getYear()==dt.getYear() && now.getMonth()==dt.getMonth() && now.getDate()==dt.getDate()) {
 				return df[1].format(dt);
 			}
