@@ -3,7 +3,9 @@ package at.sw_xp_02.whisper;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -91,6 +93,9 @@ public class MessagesFragment extends ListFragment implements LoaderManager.Load
 	private String getDisplayTime(String datetime) {
 		try {
 			Date dt = sdf.parse(datetime);
+			Calendar cal = Calendar.getInstance();
+			TimeZone tz = cal.getTimeZone();
+			dt.setHours(dt.getHours()+tz.getRawOffset()/(1000*60*60));
 			if (now.getYear()==dt.getYear() && now.getMonth()==dt.getMonth() && now.getDate()==dt.getDate()) {
 				return df[1].format(dt);
 			}
