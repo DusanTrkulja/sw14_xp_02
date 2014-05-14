@@ -42,6 +42,7 @@ EditContactDialog.OnFragmentInteractionListener, OnClickListener {
 	private GcmUtil gcmUtil;
 	ListView listView;
 	public static PhotoCache photoCache;
+	SlidingMenu menu;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +61,7 @@ EditContactDialog.OnFragmentInteractionListener, OnClickListener {
 	   
 		
 		 // configure the SlidingMenu
-        SlidingMenu menu = new SlidingMenu(this);
+        menu = new SlidingMenu(this);
         menu.setMode(SlidingMenu.RIGHT);
         menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
         menu.setShadowWidthRes(R.dimen.shadow_width);
