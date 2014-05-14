@@ -1,16 +1,16 @@
 package at.sw_xp_02.whisper;
 
-import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
-
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -28,6 +28,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import at.sw_xp_02.whisper.client.Constants;
 
 public class MainActivity extends ActionBarActivity implements LoaderManager.LoaderCallbacks<Cursor>, OnItemClickListener {
 	private AlertDialog disclaimer;
@@ -40,6 +41,19 @@ public class MainActivity extends ActionBarActivity implements LoaderManager.Loa
 		super.onCreate(savedInstanceState);
 		
 		setContentView(R.layout.activity_main);
+		
+		boolean stayOnMainscreen = getIntent().getBooleanExtra(Constants.STAY_ON_MAINSCREEN,false);
+		
+		if(!stayOnMainscreen) {
+		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+		String lastMessageTo = settings.getString("lastMessageTo", null);
+		if(lastMessageTo != null) {
+			Intent intent = new Intent(this, ChatActivity.class);
+			intent.putExtra(Common.PROFILE_ID, lastMessageTo);
+			startActivity(intent);
+		}
+			
+		}
 		listView = (ListView) findViewById(R.id.contactslist);
 		listView.setOnItemClickListener(this);
 		ContactCursorAdapter = new ContactCursorAdapter(this, null);
