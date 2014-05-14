@@ -2,17 +2,18 @@ package at.sw_xp_02.whisper;
 
 import java.io.IOException;
 
-import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
-
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
@@ -25,9 +26,11 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 import at.sw_xp_02.whisper.DataProvider.MessageType;
-import at.sw_xp_02.whisper.MainActivity.ContactCursorAdapter;
+import at.sw_xp_02.whisper.client.Constants;
 import at.sw_xp_02.whisper.client.GcmUtil;
 import at.sw_xp_02.whisper.client.ServerUtilities;
+
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 public class ChatActivity extends ActionBarActivity implements MessagesFragment.OnFragmentInteractionListener, 
 EditContactDialog.OnFragmentInteractionListener, OnClickListener {
@@ -104,6 +107,7 @@ EditContactDialog.OnFragmentInteractionListener, OnClickListener {
 		case android.R.id.home:
 			Intent intent = new Intent(this, MainActivity.class);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			intent.putExtra(Constants.STAY_ON_MAINSCREEN, true);
 			startActivity(intent);
 			return true;			
 		}
