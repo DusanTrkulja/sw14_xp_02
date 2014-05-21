@@ -93,7 +93,7 @@ public final class ServerUtilities {
 
 
 	/** Issue a POST with exponential backoff */
-	private static void post(String endpoint, Map<String, String> params, int maxAttempts) throws IOException {
+	public static void post(String endpoint, Map<String, String> params, int maxAttempts) throws IOException {
 		long backoff = BACKOFF_MILLI_SECONDS + random.nextInt(1000);
 		for (int i = 1; i <= maxAttempts; i++) {
 			Log.d(TAG, "Attempt #" + i);
@@ -126,7 +126,7 @@ public final class ServerUtilities {
 	 *
 	 * @throws IOException propagated from POST.
 	 */
-	private static void post(String endpoint, Map<String, String> params) throws IOException {
+	public static void post(String endpoint, Map<String, String> params) throws IOException {
 		URL url;
 		try {
 			url = new URL(endpoint);
