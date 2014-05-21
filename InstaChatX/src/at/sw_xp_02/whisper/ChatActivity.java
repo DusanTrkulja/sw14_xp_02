@@ -113,6 +113,13 @@ EditContactDialog.OnFragmentInteractionListener, OnClickListener {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
+		case R.id.action_add_contacts:
+			AddContactDialog newFragment = AddContactDialog.newInstance();
+			newFragment.show(getSupportFragmentManager(), "AddContactDialog");
+			return true;
+		case R.id.action_show_contacts:
+			menu.toggle();
+			return true;
 		case R.id.action_edit:
 			EditContactDialog dialog = new EditContactDialog();
 			Bundle args = new Bundle();
