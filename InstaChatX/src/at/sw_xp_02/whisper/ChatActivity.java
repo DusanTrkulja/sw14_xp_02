@@ -1,9 +1,6 @@
 package at.sw_xp_02.whisper;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
@@ -18,7 +15,6 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
-import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -33,11 +29,6 @@ import at.sw_xp_02.whisper.client.Constants;
 import at.sw_xp_02.whisper.client.GcmUtil;
 import at.sw_xp_02.whisper.client.ServerUtilities;
 
-import com.facebook.crypto.Crypto;
-import com.facebook.crypto.exception.CryptoInitializationException;
-import com.facebook.crypto.exception.KeyChainException;
-import com.facebook.crypto.keychain.SharedPrefsBackedKeyChain;
-import com.facebook.crypto.util.SystemNativeCryptoLibrary;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 public class ChatActivity extends ActionBarActivity implements MessagesFragment.OnFragmentInteractionListener, 
@@ -171,22 +162,11 @@ EditContactDialog.OnFragmentInteractionListener, OnClickListener {
 			@Override
 			protected String doInBackground(Void... params) {
 				String msg = "";
-				Crypto crypto = new Crypto(
-						new SharedPrefsBackedKeyChain(ChatActivity.this),
-						new SystemNativeCryptoLibrary());
-
-				ByteArrayOutputStream bout = new ByteArrayOutputStream();
-				OutputStream cryptoStream = null;
+				Encryption encrypt = new Encryption();
+				String cipherText = encrypt.encrypt(Constants.ENCRYPT_KEY, txt);
 				try {
-					cryptoStream = crypto.getCipherOutputStream(bout, Constants.ENCRYPTION_ENTITY);
-					cryptoStream.write(txt.getBytes("UTF-8"));
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				String cipherText = Base64.encodeToString(bout.toByteArray(), Base64.DEFAULT);
-
-				try {
-					ServerUtilities.send(txt, profileEmail);
+					Log.e("SendingMessage","Sending message:" + txt + " to " + profileEmail);
+					ServerUtilities.send(cipherText, profileEmail);
 					ContentValues values = new ContentValues(2);
 					values.put(DataProvider.COL_TYPE,  MessageType.OUTGOING.ordinal());
 					values.put(DataProvider.COL_MESSAGE, cipherText);

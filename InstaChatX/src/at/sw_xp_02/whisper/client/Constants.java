@@ -1,6 +1,5 @@
 package at.sw_xp_02.whisper.client;
 
-import com.facebook.crypto.Entity;
 
 public interface Constants {
 
@@ -17,5 +16,5 @@ public interface Constants {
 	
 	String STAY_ON_MAINSCREEN = "stayOnMainScreen";
 
-	Entity ENCRYPTION_ENTITY = new Entity("whisperCrypt");
+	String ENCRYPT_KEY = "dafhjksklsdbjsdf3bjsdaf";
 }
