@@ -10,7 +10,7 @@ public class Encryption {
 
     private String charsetName = "UTF8";
     private String algorithm = "DES";
-    private int base64Mode = Base64.DEFAULT;
+    private int base64Mode = Base64.URL_SAFE;
 
     public String getCharsetName() {
         return charsetName;
