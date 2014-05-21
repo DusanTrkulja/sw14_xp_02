@@ -7,4 +7,7 @@
     <string name="send">Send</string>
     <string name="avatar">Avatar</string>
 
+    <!-- Context menu activity -->
+    <string name="context_menu_delete">Delete</string>
+
 </resources>

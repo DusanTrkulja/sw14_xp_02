@@ -49,6 +49,12 @@ public class GcmBroadcastReceiver extends BroadcastReceiver {
 				values.put(DataProvider.COL_MESSAGE, msg);
 				values.put(DataProvider.COL_SENDER_EMAIL, senderEmail);
 				values.put(DataProvider.COL_RECEIVER_EMAIL, receiverEmail);
+
+                ContentValues values2 = new ContentValues(2);
+                values2.put(DataProvider.COL_NAME, senderEmail.substring(0, senderEmail.indexOf('@')));
+                values2.put(DataProvider.COL_EMAIL, senderEmail);
+                context.getContentResolver().insert(DataProvider.CONTENT_URI_PROFILE, values2);
+
 				context.getContentResolver().insert(DataProvider.CONTENT_URI_MESSAGES, values);
 				
 				if (Common.isNotify()) {
