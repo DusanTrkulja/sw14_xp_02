@@ -46,8 +46,7 @@ ActivityInstrumentationTestCase2<MainActivity> {
 
 	public void testPreferenceActivity() {
 
-		solo.sendKey(Solo.MENU);
-		solo.clickOnMenuItem("Settings");
+		solo.clickOnActionBarItem(R.id.action_settings);
 		solo.assertCurrentActivity("SettingsActivity", SettingsActivity.class);
 
 	}
@@ -133,6 +132,7 @@ ActivityInstrumentationTestCase2<MainActivity> {
   	 solo.clickOnActionBarItem(R.id.action_add_contacts);
      solo.typeText(0, email2);
      solo.clickOnButton(1);
+     solo.clickOnActionBarItem(R.id.action_show_contacts);
      solo.sleep(500);
   	 solo.getText("dummy");
    }
