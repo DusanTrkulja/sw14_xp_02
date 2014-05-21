@@ -69,17 +69,7 @@ public class MainActivity extends ActionBarActivity implements LoaderManager.Loa
 		actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME, ActionBar.DISPLAY_SHOW_CUSTOM);
 		actionBar.setTitle("You are");
 	    actionBar.setSubtitle(Common.getPreferredEmail());
-<<<<<<< .merge_file_a10080
 	    registerForContextMenu(listView);
-
-=======
-	    
-	    
-
-        
-  
-	    
->>>>>>> .merge_file_a06880
 //		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
 //		
 //		ArrayAdapter<CharSequence> dropdownAdapter = ArrayAdapter.createFromResource(this, R.array.dropdown_arr, android.R.layout.simple_list_item_1);
