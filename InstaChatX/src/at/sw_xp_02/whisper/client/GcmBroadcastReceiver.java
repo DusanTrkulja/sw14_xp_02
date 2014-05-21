@@ -8,6 +8,7 @@ import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
@@ -49,12 +50,15 @@ public class GcmBroadcastReceiver extends BroadcastReceiver {
 				values.put(DataProvider.COL_MESSAGE, msg);
 				values.put(DataProvider.COL_SENDER_EMAIL, senderEmail);
 				values.put(DataProvider.COL_RECEIVER_EMAIL, receiverEmail);
-
-                ContentValues values2 = new ContentValues(2);
+				
+				Cursor otherUser = context.getContentResolver().query(DataProvider.CONTENT_URI_PROFILE,null,DataProvider.COL_EMAIL + "= ?",new String[] { senderEmail},null);
+				if(otherUser == null) {
+				ContentValues values2 = new ContentValues(2);
                 values2.put(DataProvider.COL_NAME, senderEmail.substring(0, senderEmail.indexOf('@')));
                 values2.put(DataProvider.COL_EMAIL, senderEmail);
                 context.getContentResolver().insert(DataProvider.CONTENT_URI_PROFILE, values2);
-
+				}
+                
 				context.getContentResolver().insert(DataProvider.CONTENT_URI_MESSAGES, values);
 				
 				if (Common.isNotify()) {
