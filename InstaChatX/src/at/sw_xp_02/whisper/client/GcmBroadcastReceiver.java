@@ -52,11 +52,11 @@ public class GcmBroadcastReceiver extends BroadcastReceiver {
 				values.put(DataProvider.COL_RECEIVER_EMAIL, receiverEmail);
 				
 				Cursor otherUser = context.getContentResolver().query(DataProvider.CONTENT_URI_PROFILE,null,DataProvider.COL_EMAIL + "= ?",new String[] { senderEmail},null);
-				if(otherUser == null) {
-				ContentValues values2 = new ContentValues(2);
-                values2.put(DataProvider.COL_NAME, senderEmail.substring(0, senderEmail.indexOf('@')));
-                values2.put(DataProvider.COL_EMAIL, senderEmail);
-                context.getContentResolver().insert(DataProvider.CONTENT_URI_PROFILE, values2);
+				if(otherUser.getCount() == 0) {
+					ContentValues values2 = new ContentValues(2);
+					values2.put(DataProvider.COL_NAME, senderEmail.substring(0, senderEmail.indexOf('@')));
+					values2.put(DataProvider.COL_EMAIL, senderEmail);
+					context.getContentResolver().insert(DataProvider.CONTENT_URI_PROFILE, values2);
 				}
                 
 				context.getContentResolver().insert(DataProvider.CONTENT_URI_MESSAGES, values);
