@@ -1,5 +1,6 @@
 package at.sw_xp_02.whisper.client;
 
+
 public interface Constants {
 
     /**
@@ -14,4 +15,6 @@ public interface Constants {
 	String SENDER_ID = "905468364069";
 	
 	String STAY_ON_MAINSCREEN = "stayOnMainScreen";
+
+	String ENCRYPT_KEY = "dafhjksklsdbjsdf3bjsdaf";
 }

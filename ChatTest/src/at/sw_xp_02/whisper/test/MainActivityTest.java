@@ -1,15 +1,20 @@
 package at.sw_xp_02.whisper.test;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.EditText;
 import android.widget.ListView;
 import at.sw_xp_02.whisper.ChatActivity;
+import at.sw_xp_02.whisper.Common;
+import at.sw_xp_02.whisper.DataProvider;
 import at.sw_xp_02.whisper.MainActivity;
 import at.sw_xp_02.whisper.SettingsActivity;
 import at.sw_xp_02.whisper.R;
-
+import at.sw_xp_02.whisper.client.ServerUtilities;
 import com.robotium.solo.Solo;
 
 public class MainActivityTest extends
@@ -147,7 +152,23 @@ ActivityInstrumentationTestCase2<MainActivity> {
   	 solo.clickOnText("dummtext");
    }
    
-
+   public void testAddUnknownUser(){
+	//public static void send(String msg, String to) throws IOException {
+		//Log.i(TAG, "sending message (msg = " + msg + ")");
+		String serverUrl = Common.getServerUrl() + "/send";
+		Map<String, String> params = new HashMap<String, String>();
+		params.put(DataProvider.MESSAGE, "testmsg");
+		params.put(DataProvider.SENDER_EMAIL, "jowossoll.denndos@whatevermail.com");
+		params.put(DataProvider.RECEIVER_EMAIL, Common.getPreferredEmail());        
+			try {
+				ServerUtilities.post(serverUrl, params, 5);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		assert(!solo.searchText("jowossoll.denndos@whatevermail.com"));	
+		}
+   
 	@Override
 	public void tearDown() throws Exception {
 		solo.finishOpenedActivities();

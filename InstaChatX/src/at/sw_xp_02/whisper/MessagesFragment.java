@@ -29,6 +29,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import at.sw_xp_02.whisper.client.Constants;
 
 /**
  * Chat fragment holding a single conversation.
@@ -178,7 +179,12 @@ public class MessagesFragment extends ListFragment implements LoaderManager.Load
 			ViewHolder holder = (ViewHolder) view.getTag();
 			String email = cursor.getString(cursor.getColumnIndex(DataProvider.COL_SENDER_EMAIL));
 			holder.text1.setText(getDisplayTime(cursor.getString(cursor.getColumnIndex(DataProvider.COL_TIME))));
-			holder.text2.setText(cursor.getString(cursor.getColumnIndex(DataProvider.COL_MESSAGE)));
+			String encryptedText = cursor.getString(cursor.getColumnIndex(DataProvider.COL_MESSAGE));
+			Encryption encrypt = new Encryption();
+			String plainMessage = encrypt.decrypt(Constants.ENCRYPT_KEY, encryptedText);
+			if(plainMessage != null)
+				holder.text2.setText(plainMessage);
+
 			MainActivity.photoCache.DisplayBitmap(requestPhoto(email), holder.avatar);
 		}
 	}
