@@ -21,10 +21,7 @@ ActivityInstrumentationTestCase2<MainActivity> {
 
 	public void setUp() throws Exception {
 		solo = new Solo(getInstrumentation(), getActivity());
-//		solo.clickOnActionBarItem(R.id.action_add);
-//		solo.typeText(0, "strass.michael@gmx.net");
-//		solo.clickOnButton(1);
-//		solo.clickOnText("strass.michael@gmx.net");
+
 	}
 
 	private void addDummyUser(String email) {
@@ -42,7 +39,9 @@ ActivityInstrumentationTestCase2<MainActivity> {
 	}
 
 	public void testSendMessage() throws InterruptedException {
-		solo.clickOnText("strass.michael@gmx.net");
+		String email = "jupaldupal@gmail.com";
+		addDummyUser(email);
+		solo.clickOnText(email);
 		solo.assertCurrentActivity("ChatActivity", ChatActivity.class);
 		message = (EditText) solo.getView(R.id.msg_edit);
 		solo.typeText(0, "Test Message");
@@ -54,7 +53,7 @@ ActivityInstrumentationTestCase2<MainActivity> {
 	}
 	
 	public void testOfflineMessageFailure() {
-		solo.clickOnText("strass.michael@gmx.net");
+		solo.clickOnText("");
 		solo.assertCurrentActivity("ChatActivity", ChatActivity.class);
 		message = (EditText) solo.getView(R.id.msg_edit);
 		solo.typeText(0, "Test Message");
@@ -70,6 +69,15 @@ ActivityInstrumentationTestCase2<MainActivity> {
         solo.clickOnText("Delete");
         assert(!solo.searchText(user));
     }
+    
+   public void testContactAdd() {
+  	 String email = "jupaldupal@gmail.com";
+  	 solo.clickOnActionBarItem(R.id.action_add);
+     solo.typeText(0, email);
+     solo.clickOnButton(1);
+     solo.sleep(500);
+     solo.searchText(email);
+   }
 
 	@Override
 	public void tearDown() throws Exception {
