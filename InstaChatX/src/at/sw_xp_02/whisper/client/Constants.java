@@ -1,5 +1,7 @@
 package at.sw_xp_02.whisper.client;
 
+import com.facebook.crypto.Entity;
+
 public interface Constants {
 
     /**
@@ -14,4 +16,6 @@ public interface Constants {
 	String SENDER_ID = "905468364069";
 	
 	String STAY_ON_MAINSCREEN = "stayOnMainScreen";
+
+	Entity ENCRYPTION_ENTITY = new Entity("whisperCrypt");
 }

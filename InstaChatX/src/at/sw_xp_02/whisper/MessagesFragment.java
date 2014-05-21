@@ -1,5 +1,10 @@
 package at.sw_xp_02.whisper;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -21,6 +26,8 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
+import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +36,13 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import at.sw_xp_02.whisper.client.Constants;
+
+import com.facebook.crypto.Crypto;
+import com.facebook.crypto.exception.CryptoInitializationException;
+import com.facebook.crypto.exception.KeyChainException;
+import com.facebook.crypto.keychain.SharedPrefsBackedKeyChain;
+import com.facebook.crypto.util.SystemNativeCryptoLibrary;
 
 /**
  * Chat fragment holding a single conversation.
@@ -178,7 +192,28 @@ public class MessagesFragment extends ListFragment implements LoaderManager.Load
 			ViewHolder holder = (ViewHolder) view.getTag();
 			String email = cursor.getString(cursor.getColumnIndex(DataProvider.COL_SENDER_EMAIL));
 			holder.text1.setText(getDisplayTime(cursor.getString(cursor.getColumnIndex(DataProvider.COL_TIME))));
-			holder.text2.setText(cursor.getString(cursor.getColumnIndex(DataProvider.COL_MESSAGE)));
+			String encryptedText = cursor.getString(cursor.getColumnIndex(DataProvider.COL_MESSAGE));
+			Crypto crypto = new Crypto(
+					new SharedPrefsBackedKeyChain(getActivity()),
+					new SystemNativeCryptoLibrary());
+			String plainMessage = null;
+			ByteArrayInputStream bin = new ByteArrayInputStream(Base64.decode(encryptedText, Base64.DEFAULT));
+			try {
+			InputStream cryptoStream = crypto.getCipherInputStream(bin, Constants.ENCRYPTION_ENTITY);
+			ByteArrayOutputStream bout = new ByteArrayOutputStream();
+			int read = 0;
+			byte[] buffer = new byte[1024];
+			while ((read = cryptoStream.read(buffer)) != -1) {
+			   bout.write(buffer, 0, read);
+			}
+			plainMessage = new String(bout.toByteArray(), "UTF-8");
+			} catch(Exception e) {
+				
+			}
+			if(plainMessage != null)
+				holder.text2.setText(plainMessage);
+			else
+				holder.text2.setText(encryptedText);
 			MainActivity.photoCache.DisplayBitmap(requestPhoto(email), holder.avatar);
 		}
 	}

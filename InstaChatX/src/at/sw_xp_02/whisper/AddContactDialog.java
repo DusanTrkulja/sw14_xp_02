@@ -45,11 +45,13 @@ public class AddContactDialog extends DialogFragment {
 					@Override
 					public void onClick(View v) {
 						String email = et.getText().toString();
+						/*
 						if(email.equals(Common.getPreferredEmail())) {
 							Toast.makeText(AddContactDialog.this.getActivity(), "You cannot add yourself.", Toast.LENGTH_LONG).show();
 							alertDialog.dismiss();
 							return;
 						}
+						*/
 						if (!isEmailValid(email)) {
 							et.setError("Invalid email!");
 							return;
