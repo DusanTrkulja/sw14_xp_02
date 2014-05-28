@@ -186,6 +186,7 @@ public class GcmUtil {
         ctx.sendBroadcast(intent);		
 	}
 	
+	
 	public void cleanup() {
 		if (registrationTask != null) {
 			registrationTask.cancel(true);
