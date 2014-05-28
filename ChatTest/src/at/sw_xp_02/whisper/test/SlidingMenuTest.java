@@ -1,20 +1,18 @@
 package at.sw_xp_02.whisper.test;
 
-import com.robotium.solo.Solo;
-
 import android.test.ActivityInstrumentationTestCase2;
-import android.widget.EditText;
 import at.sw_xp_02.whisper.ChatActivity;
-import at.sw_xp_02.whisper.MainActivity;
 import at.sw_xp_02.whisper.R;
 
-public class SlidingMenuTest extends ActivityInstrumentationTestCase2<MainActivity> {
+import com.robotium.solo.Solo;
+
+public class SlidingMenuTest extends ActivityInstrumentationTestCase2<ChatActivity> {
 
 	private Solo solo;
-	private EditText message;
+	private final static int TIME_LIMIT = 5000;
 
 	public SlidingMenuTest() {
-		super(MainActivity.class);
+		super(ChatActivity.class);
 	}
 
 	public void setUp() throws Exception {
@@ -25,7 +23,7 @@ public class SlidingMenuTest extends ActivityInstrumentationTestCase2<MainActivi
 	private void addDummyUser(String email) {
 	    solo.clickOnActionBarItem(R.id.action_add);
         solo.typeText(0, email);
-        solo.clickOnButton(1);
+        solo.clickOnButton("OK");
 	}
 	
 
@@ -36,7 +34,7 @@ public class SlidingMenuTest extends ActivityInstrumentationTestCase2<MainActivi
   	 addDummyUser(email2);
   	 solo.clickOnText(email);
   	 solo.assertCurrentActivity("ChatActivity", ChatActivity.class);
-  	 solo.scrollViewToSide(solo.getView(R.id.msg_list), solo.RIGHT);
+  	 solo.scrollViewToSide(solo.getView(R.id.msg_list), Solo.RIGHT);
   	 solo.clickOnText("dummy");
    }
    
@@ -52,10 +50,10 @@ public class SlidingMenuTest extends ActivityInstrumentationTestCase2<MainActivi
   	 solo.goBack();
   	 solo.clickOnText(email);
   	 solo.assertCurrentActivity("ChatActivity", ChatActivity.class);
-  	 solo.scrollViewToSide(solo.getView(R.id.msg_list), solo.RIGHT);
+  	 solo.scrollViewToSide(solo.getView(R.id.msg_list), Solo.RIGHT);
   	 solo.clickOnText("dummy");
   	 solo.assertCurrentActivity("ChatActivity", ChatActivity.class);
-  	 solo.getText(dummymessage);
+  	 solo.waitForText(dummymessage,1,TIME_LIMIT);
    }
 	   
 

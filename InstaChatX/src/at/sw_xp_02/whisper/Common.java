@@ -16,6 +16,10 @@ public class Common extends Application {
 	public static final String PROFILE_ID = "profile_id";
 	public static final String ACTION_REGISTER = "at.sw_xp_02.whisper.REGISTER";
 	public static final String EXTRA_STATUS = "status";
+	public static final String ONLINE_QUESTION = "269cefcd3131da0e401c1a0796d13f2fe4209b86";
+	public static final String ONLINE_ANSWER = "3d36a0b3d6db72ce7db95ff6d6c659bce1e04b5e";
+	public static final String DEBUG = "#debug*!";
+	public static final String NODEBUG = "#nodebug*!";
 	public static final int STATUS_SUCCESS = 1;
 	public static final int STATUS_FAILED = 0;
 	public static String[] email_arr;

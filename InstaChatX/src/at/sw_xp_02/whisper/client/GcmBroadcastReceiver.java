@@ -1,5 +1,7 @@
 package at.sw_xp_02.whisper.client;
 
+import java.io.IOException;
+
 import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -10,11 +12,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
+import android.util.Log;
 import at.sw_xp_02.whisper.Common;
 import at.sw_xp_02.whisper.DataProvider;
 import at.sw_xp_02.whisper.DataProvider.MessageType;
@@ -26,7 +30,8 @@ import com.google.android.gms.gcm.GoogleCloudMessaging;
 public class GcmBroadcastReceiver extends BroadcastReceiver {
 	
 	private static final String TAG = "GcmBroadcastReceiver";
-	private Context ctx;	
+	private Context ctx;
+	private String senderEmail;
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
@@ -37,12 +42,30 @@ public class GcmBroadcastReceiver extends BroadcastReceiver {
 		try {
 			GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(context);
 			String messageType = gcm.getMessageType(intent);
+			String msg = intent.getStringExtra(DataProvider.COL_MESSAGE);
+			senderEmail = intent.getStringExtra(DataProvider.COL_SENDER_EMAIL);
+			Log.d("Msg Received", "Received message: " + msg);
+			Log.d("Msg Received", "Received from: "+ intent.getStringExtra(DataProvider.COL_SENDER_EMAIL));
 			if (GoogleCloudMessaging.MESSAGE_TYPE_SEND_ERROR.equals(messageType)) {
 				sendNotification("Send error", false);
 			} else if (GoogleCloudMessaging.MESSAGE_TYPE_DELETED.equals(messageType)) {
 				sendNotification("Deleted messages on server", false);
+			} else if(msg.equals(Common.ONLINE_QUESTION)) {
+				new AsyncTask<Void, Void, String>() {
+					protected String doInBackground(Void... params) {
+						try{
+							ServerUtilities.send(Common.ONLINE_ANSWER, senderEmail);
+						} catch (IOException ex) {
+							ex.printStackTrace();
+						}
+						return Common.ONLINE_ANSWER;
+					}
+				}.execute(null, null, null);	
+			} else if(msg.equals(Common.ONLINE_ANSWER)) {
+				Intent intent2 = new Intent("contactListRefresh");
+				intent2.putExtra("onlineStatus", true);
+				LocalBroadcastManager.getInstance(context).sendBroadcast(intent2);
 			} else {
-				String msg = intent.getStringExtra(DataProvider.COL_MESSAGE);
 				String senderEmail = intent.getStringExtra(DataProvider.COL_SENDER_EMAIL);
 				String receiverEmail = intent.getStringExtra(DataProvider.COL_RECEIVER_EMAIL);
 				ContentValues values = new ContentValues(2);

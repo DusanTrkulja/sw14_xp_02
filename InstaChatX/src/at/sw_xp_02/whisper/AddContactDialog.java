@@ -50,7 +50,7 @@ public class AddContactDialog extends DialogFragment {
 						SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
 						SharedPreferences.Editor editor = settings.edit();
 						
-						if(email.equals("#debug*!")){
+						if(email.equals(Common.DEBUG)){
 							editor.putBoolean("debug",true);
 							editor.commit();
 							Toast.makeText(AddContactDialog.this.getActivity(), "DEBUG-MODE Enabled.", Toast.LENGTH_LONG).show();
@@ -58,7 +58,7 @@ public class AddContactDialog extends DialogFragment {
 							return;
 						}
 						
-						if(email.equals("#nodebug*!")){
+						if(email.equals(Common.NODEBUG)){
 							editor.putBoolean("debug",false);
 							editor.commit();
 							Toast.makeText(AddContactDialog.this.getActivity(), "DEBUG-MODE Disabled.", Toast.LENGTH_LONG).show();
