@@ -110,24 +110,6 @@ ActivityInstrumentationTestCase2<MainActivity> {
   	 solo.clickOnText("dummy");
    }
    
-   public void testSlidingContactsChange() {
-  	 String email = "jupaldupal@gmail.com";
-  	 String email2 = "dummy@dum.dum";
-  	 String dummymessage = "Top of the mountain";
-  	 addDummyUser(email);
-  	 addDummyUser(email2);
-  	 solo.clickOnText(email2);
-  	 solo.typeText(0, dummymessage);
-  	 solo.clickOnButton("Send");
-  	 solo.goBack();
-  	 solo.clickOnText(email);
-  	 solo.assertCurrentActivity("ChatActivity", ChatActivity.class);
-  	 solo.scrollViewToSide(solo.getView(R.id.msg_list), solo.RIGHT);
-  	 solo.clickOnText("dummy");
-  	 solo.assertCurrentActivity("ChatActivity", ChatActivity.class);
-  	 solo.getText(dummymessage);
-   }
-   
    public void testAddContactInChatActivity() {
   	 String email = "jupaldupal@gmail.com";
   	 String email2 = "dummy@dum.dum";

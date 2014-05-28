@@ -750,7 +750,7 @@
 
                     <!-- define where the .em file is going. This may have been
                          setup already if this is a library -->
-                    <property name="emma.coverage.absolute.file" location="$/sdcard/sdcard/coverage.em" />
+                    <property name="emma.coverage.absolute.file" location="${out.absolute.dir}/coverage.em" />
 
                     <!-- It only instruments class files, not any external libs -->
                     <emma enabled="true">
@@ -1269,7 +1269,7 @@
 
         <property name="emma.dump.file"
                 value="/data/data/${tested.project.app.package}/coverage.ec" />
-
+	
         <if condition="${emma.enabled}">
             <then>
                 <echo>Running tests...</echo>
@@ -1288,7 +1288,7 @@
                     <arg value="run-as" />
                     <arg value="${tested.project.app.package}" />
                     <arg value="chmod" />
-                    <arg value="644" />
+                    <arg value="777" />
                     <arg value="${emma.dump.file}" />
                 </exec>
                 <echo level="info">Downloading coverage file into project directory...</echo>
