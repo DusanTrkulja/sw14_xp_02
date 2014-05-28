@@ -152,6 +152,24 @@ ActivityInstrumentationTestCase2<MainActivity> {
   	 solo.clickOnText("dummtext");
    }
    
+   
+   public void testReceiveMessage() {
+	   String debug = "#debug*!";
+	   String email = "patrick.frohmann1604@gmail.com";
+	   addDummyUser(debug);
+	   solo.waitForText("DEBUG-MODE Enabled.");
+	   addDummyUser(email);
+	   solo.clickOnText(email);
+	   solo.assertCurrentActivity("ChatActivity", ChatActivity.class);
+	   message = (EditText) solo.getView(R.id.msg_edit);
+	   solo.typeText(0, "Test Message");
+	   solo.clickOnButton("Send");
+	   solo.getText("Test Message");
+	   
+	   
+	   
+   }
+   
    public void testAddUnknownUser(){
 	//public static void send(String msg, String to) throws IOException {
 		//Log.i(TAG, "sending message (msg = " + msg + ")");
