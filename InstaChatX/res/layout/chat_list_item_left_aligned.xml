@@ -31,8 +31,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="5dip"
+        android:layout_marginLeft="0dip"
+        android:layout_marginRight="10dip"
         android:layout_toRightOf="@id/avatar"
-        android:gravity="center_vertical" />
+        android:ellipsize="marquee"
+        android:gravity="center"
+        android:textColor="#FFFFFF"
+        android:background="@drawable/chat_in" />
 
 </RelativeLayout>
