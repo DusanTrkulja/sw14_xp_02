@@ -1,7 +1,6 @@
 package at.sw_xp_02.whisper.test;
 
 import java.io.IOException;
-import java.net.URL;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
