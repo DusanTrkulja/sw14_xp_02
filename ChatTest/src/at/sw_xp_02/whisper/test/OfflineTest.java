@@ -13,14 +13,14 @@ import at.sw_xp_02.whisper.ChatActivity;
 import at.sw_xp_02.whisper.MainActivity;
 import at.sw_xp_02.whisper.R;
 
-
 import com.robotium.solo.Solo;
 
 public class OfflineTest extends
 ActivityInstrumentationTestCase2<MainActivity> {
 
 	private Solo solo;
-	private EditText message;
+	private EditText message = null;
+	private final static int TIME_LIMIT = 5000;
 
 	public OfflineTest() {
 		super(MainActivity.class);
@@ -29,7 +29,6 @@ ActivityInstrumentationTestCase2<MainActivity> {
 	public void setUp() throws Exception {
 		solo = new Solo(getInstrumentation(), getActivity());	
 		
-		// todo disconect wifi
 		turnWifi(false);
 		setMobileDataEnabled(getActivity(),false);
 		solo.goBackToActivity("MainActivity");
@@ -48,23 +47,22 @@ ActivityInstrumentationTestCase2<MainActivity> {
 	private void addDummyUser(String email) {
 	    solo.clickOnActionBarItem(R.id.action_add);
         solo.typeText(0, email);
-        solo.clickOnButton(1);
+        solo.clickOnButton("OK");
 	}
 	
 	private void setMobileDataEnabled(Context context, boolean enabled) {
 	
 		try {
 			final ConnectivityManager conman = (ConnectivityManager)  context.getSystemService(Context.CONNECTIVITY_SERVICE);
-		  final Class conmanClass = Class.forName(conman.getClass().getName());
+		  final Class<?> conmanClass = Class.forName(conman.getClass().getName());
 		  final Field iConnectivityManagerField = conmanClass.getDeclaredField("mService");
 		  iConnectivityManagerField.setAccessible(true);
 		  final Object iConnectivityManager = iConnectivityManagerField.get(conman);
-		  final Class iConnectivityManagerClass = Class.forName(iConnectivityManager.getClass().getName());
+		  final Class<?> iConnectivityManagerClass = Class.forName(iConnectivityManager.getClass().getName());
 		  final Method setMobileDataEnabledMethod = iConnectivityManagerClass.getDeclaredMethod("setMobileDataEnabled", Boolean.TYPE);
 		  setMobileDataEnabledMethod.setAccessible(true);
 		  setMobileDataEnabledMethod.invoke(iConnectivityManager, enabled);
 		} catch (Exception ignored) {
-			// TODO Auto-generated catch block
 		}
 	  
 	}
@@ -89,7 +87,7 @@ ActivityInstrumentationTestCase2<MainActivity> {
 		message = (EditText) solo.getView(R.id.msg_edit);
 		solo.typeText(0, "Test Message");
 		solo.clickOnButton("Send");
-		solo.waitForText("Message could not be sent");
+		solo.waitForText("Message could not be sent",1,TIME_LIMIT);
 	}
 	
 	@Override
@@ -98,7 +96,6 @@ ActivityInstrumentationTestCase2<MainActivity> {
 		
 		setMobileDataEnabled(getActivity(),true);
 
-		// todo connect wifi
 		turnWifi(true);
     
 	}
