@@ -64,12 +64,18 @@ EditContactDialog.OnFragmentInteractionListener, OnClickListener {
 		menu = new SlidingMenu(this);
 		menu.setMode(SlidingMenu.RIGHT);
 		menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
-		menu.setShadowWidthRes(R.dimen.shadow_width);
-		//menu.setShadowDrawable(R.drawable.shadow);
+		//menu.setShadowWidthRes(R.dimen.shadow_width);
+		menu.setShadowWidth(R.dimen.shadow_width);
+	
+		//menu.setShadowDrawable(R.drawable.shadowright);
+		menu.setBehindScrollScale(0);
+		menu.setFadeDegree(0);
 		menu.setBehindOffsetRes(R.dimen.slidingmenu_offset);
 		//menu.setFadeDegree(0.35f);
 		menu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
 		menu.setMenu(R.layout.menu);
+		
+		
 
 
 
