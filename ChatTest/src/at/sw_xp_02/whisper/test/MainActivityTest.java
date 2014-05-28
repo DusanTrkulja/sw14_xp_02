@@ -169,8 +169,26 @@ ActivityInstrumentationTestCase2<MainActivity> {
 		assert(!solo.searchText("jowossoll.denndos@whatevermail.com"));	
 		}
    
+   public void testOnlineStatus() {
+  	 enableDebugMode(true);
+  	 addDummyUser(Common.getPreferredEmail());
+  	 solo.clickOnText(Common.getPreferredEmail());
+  	 solo.waitForText("online", 1, 5000);
+   }
+  
+   private void enableDebugMode(Boolean enable) {
+  	 solo.goBackToActivity("MainActivity");
+  	 solo.clickOnActionBarItem(R.id.action_add);
+  	 if(enable)
+  		 solo.typeText(0, Common.DEBUG);
+  	 else
+  		 solo.typeText(0, Common.NODEBUG);
+     solo.clickOnButton(1);
+   }
+   
 	@Override
 	public void tearDown() throws Exception {
 		solo.finishOpenedActivities();
+		enableDebugMode(false);
 	}
 }
