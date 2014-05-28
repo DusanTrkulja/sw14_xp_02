@@ -63,7 +63,7 @@ EditContactDialog.OnFragmentInteractionListener, OnClickListener {
 		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
 		SharedPreferences.Editor editor = settings.edit();
     editor.putString("lastMessageTo",profileId);
-    editor.commit();
+    editor.apply();
 		
 		// configure the SlidingMenu
 		menu = new SlidingMenu(this);
