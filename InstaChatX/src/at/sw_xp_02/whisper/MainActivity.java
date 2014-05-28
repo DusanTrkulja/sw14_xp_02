@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -31,6 +32,7 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import at.sw_xp_02.whisper.client.Constants;
 
 public class MainActivity extends ActionBarActivity implements LoaderManager.LoaderCallbacks<Cursor>, OnItemClickListener, OnItemLongClickListener {
@@ -73,8 +75,17 @@ public class MainActivity extends ActionBarActivity implements LoaderManager.Loa
 	    registerForContextMenu(listView);
 		
 		getSupportLoaderManager().initLoader(0, null, this);
+		if(!isOnline()) 
+			Toast.makeText(this, "You don't have an internet connection", Toast.LENGTH_LONG).show();
 	}
 
+	public  boolean isOnline() {
+	    ConnectivityManager cm =
+	        (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+	    return cm.getActiveNetworkInfo() != null && 
+	       cm.getActiveNetworkInfo().isConnectedOrConnecting();
+	}
 	@Override
     public boolean onCreateOptionsMenu (Menu menu) {
     	getMenuInflater().inflate(R.menu.main, menu);
