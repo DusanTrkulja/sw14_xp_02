@@ -47,18 +47,19 @@ public class MainActivity extends ActionBarActivity implements LoaderManager.Loa
 		
 		setContentView(R.layout.activity_main);
 		
-		boolean stayOnMainscreen = getIntent().getBooleanExtra(Constants.STAY_ON_MAINSCREEN,false);
-		
-		if(!stayOnMainscreen) {
 		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
-		String lastMessageTo = settings.getString("lastMessageTo", null);
-		if(lastMessageTo != null) {
-			Intent intent = new Intent(this, ChatActivity.class);
-			intent.putExtra(Common.PROFILE_ID, lastMessageTo);
-			startActivity(intent);
+		boolean stayOnMainscreen = getIntent().getBooleanExtra(Constants.STAY_ON_MAINSCREEN,false);
+		boolean debug = settings.getBoolean("debug", false);
+		
+		if(!stayOnMainscreen && !debug) {
+			String lastMessageTo = settings.getString("lastMessageTo", null);
+			if(lastMessageTo != null) {
+				Intent intent = new Intent(this, ChatActivity.class);
+				intent.putExtra(Common.PROFILE_ID, lastMessageTo);
+				startActivity(intent);
+			}
 		}
-			
-		}
+		
 		listView = (ListView) findViewById(R.id.contactslist);
 		listView.setOnItemClickListener(this);
 		listView.setOnItemLongClickListener(this);
@@ -72,17 +73,6 @@ public class MainActivity extends ActionBarActivity implements LoaderManager.Loa
 		actionBar.setTitle("You are");
 	    actionBar.setSubtitle(Common.getPreferredEmail());
 	    registerForContextMenu(listView);
-//		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-//		
-//		ArrayAdapter<CharSequence> dropdownAdapter = ArrayAdapter.createFromResource(this, R.array.dropdown_arr, android.R.layout.simple_list_item_1);
-//		actionBar.setListNavigationCallbacks(dropdownAdapter, new ActionBar.OnNavigationListener() {
-//			
-//			@Override
-//			public boolean onNavigationItemSelected(int itemPosition, long itemId) {
-//				getLoaderManager().restartLoader(0, getArgs(itemPosition), MainActivity.this);
-//				return true;
-//			}
-//		});
 		
 		getSupportLoaderManager().initLoader(0, null, this);
 		if(!isOnline()) 

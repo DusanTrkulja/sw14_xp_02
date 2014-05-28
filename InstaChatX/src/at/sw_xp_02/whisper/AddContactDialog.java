@@ -4,8 +4,10 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.database.SQLException;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
 import android.text.InputType;
 import android.view.View;
@@ -45,13 +47,31 @@ public class AddContactDialog extends DialogFragment {
 					@Override
 					public void onClick(View v) {
 						String email = et.getText().toString();
-						/*
-						if(email.equals(Common.getPreferredEmail())) {
+						SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
+						SharedPreferences.Editor editor = settings.edit();
+						
+						if(email.equals("#debug*!")){
+							editor.putBoolean("debug",true);
+							editor.commit();
+							Toast.makeText(AddContactDialog.this.getActivity(), "DEBUG-MODE Enabled.", Toast.LENGTH_LONG).show();
+							alertDialog.dismiss();
+							return;
+						}
+						
+						if(email.equals("#nodebug*!")){
+							editor.putBoolean("debug",false);
+							editor.commit();
+							Toast.makeText(AddContactDialog.this.getActivity(), "DEBUG-MODE Disabled.", Toast.LENGTH_LONG).show();
+							alertDialog.dismiss();
+							return;
+						}
+
+						if(email.equals(Common.getPreferredEmail()) && !settings.getBoolean("debug", false)) {
 							Toast.makeText(AddContactDialog.this.getActivity(), "You cannot add yourself.", Toast.LENGTH_LONG).show();
 							alertDialog.dismiss();
 							return;
 						}
-						*/
+
 						if (!isEmailValid(email)) {
 							et.setError("Invalid email!");
 							return;

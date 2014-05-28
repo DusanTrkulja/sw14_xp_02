@@ -7,10 +7,12 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -49,7 +51,7 @@ EditContactDialog.OnFragmentInteractionListener, OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.chat_activity);
 
-
+		
 		profileId = getIntent().getStringExtra(Common.PROFILE_ID);
 		msgEdit = (EditText) findViewById(R.id.msg_edit);
 		sendBtn = (Button) findViewById(R.id.send_btn);
@@ -57,9 +59,12 @@ EditContactDialog.OnFragmentInteractionListener, OnClickListener {
 		ActionBar actionBar = getSupportActionBar();
 		actionBar.setHomeButtonEnabled(true);
 		actionBar.setDisplayHomeAsUpEnabled(true);
-
-
-
+		
+		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+		SharedPreferences.Editor editor = settings.edit();
+    editor.putString("lastMessageTo",profileId);
+    editor.commit();
+		
 		// configure the SlidingMenu
 		menu = new SlidingMenu(this);
 		menu.setMode(SlidingMenu.RIGHT);
