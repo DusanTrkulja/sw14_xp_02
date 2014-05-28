@@ -4,10 +4,12 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,6 +21,7 @@ import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -73,7 +76,41 @@ public class MainActivity extends ActionBarActivity implements LoaderManager.Loa
 		actionBar.setTitle("You are");
 	    actionBar.setSubtitle(Common.getPreferredEmail());
 	    registerForContextMenu(listView);
-		
+	  Log.d("Phone Contacts", "settings -> my first time: " + String.valueOf(settings.getBoolean("my_first_time", true)));
+	  //search for contacts in phone contacts
+	  if (settings.getBoolean("my_first_time", true)) {
+	  	ContentResolver cr = getContentResolver();
+      Cursor cur = cr.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
+      if (cur.getCount() > 0) {
+      	while (cur.moveToNext()) {
+      		String id = cur.getString(cur.getColumnIndex(ContactsContract.Contacts._ID));
+      		String name = cur.getString(cur.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+      		if (Integer.parseInt(cur.getString(cur.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))) > 0) {
+      			//Query phone here.  Covered next
+      			Cursor emailCur = cr.query(ContactsContract.CommonDataKinds.Email.CONTENT_URI, null,
+      	  			ContactsContract.CommonDataKinds.Email.CONTACT_ID + " = ?", new String[]{id}, null); 
+      	  	while (emailCur.moveToNext()) { 
+      		    // This would allow you get several email addresses
+              // if the email addresses were stored in an array
+      		    String email = emailCur.getString(emailCur.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA));
+      	 	    String emailType = emailCur.getString(emailCur.getColumnIndex(ContactsContract.CommonDataKinds.Email.TYPE)); 
+      	 	    try {
+      	 	    	ContentValues values = new ContentValues(2);
+      	 	    	values.put(DataProvider.COL_NAME, name);
+ 								values.put(DataProvider.COL_EMAIL, email);
+ 								getContentResolver().insert(DataProvider.CONTENT_URI_PROFILE, values);
+      	 	   } catch (SQLException sqle) {}
+      	  	} 
+        	 	emailCur.close();
+	        }
+         }
+      }
+      SharedPreferences.Editor editor = settings.edit();
+	  	editor.putBoolean("my_first_time", false);
+	  	editor.commit();
+	  }
+	  Log.e("Phone Contacts", "settings -> my first time: " + String.valueOf(settings.getBoolean("my_first_time", true)));
+	  
 		getSupportLoaderManager().initLoader(0, null, this);
 		if(!isOnline()) 
 			Toast.makeText(this, "You don't have an internet connection", Toast.LENGTH_LONG).show();
