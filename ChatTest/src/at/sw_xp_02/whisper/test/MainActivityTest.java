@@ -131,7 +131,7 @@ ActivityInstrumentationTestCase2<MainActivity> {
    public void testAddContactInChatActivity() {
   	 String email = "jupaldupal@gmail.com";
   	 String email2 = "dummy@dum.dum";
-  	 addDummyUser(email);
+  	 addDummyUser(email2);
   	 
   	 solo.clickOnText(email);
   	 solo.clickOnActionBarItem(R.id.action_add_contacts);
