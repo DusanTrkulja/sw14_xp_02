@@ -97,6 +97,7 @@ public class MainActivity extends ActionBarActivity implements LoaderManager.Loa
 		switch (item.getItemId()) {
 		case R.id.action_add:
 			AddContactDialog newFragment = AddContactDialog.newInstance();
+			super.onPostResume();   //prevent illegalstateexception
 			newFragment.show(getSupportFragmentManager(), "AddContactDialog");
 			return true;
 		case R.id.action_settings:
