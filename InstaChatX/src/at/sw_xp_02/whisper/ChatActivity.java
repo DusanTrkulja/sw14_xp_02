@@ -45,6 +45,7 @@ EditContactDialog.OnFragmentInteractionListener, OnClickListener {
 	ListView listView;
 	public static PhotoCache photoCache;
 	SlidingMenu menu;
+	ActionBar actionBar;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +57,7 @@ EditContactDialog.OnFragmentInteractionListener, OnClickListener {
 		msgEdit = (EditText) findViewById(R.id.msg_edit);
 		sendBtn = (Button) findViewById(R.id.send_btn);
 		sendBtn.setOnClickListener(this);
-		ActionBar actionBar = getSupportActionBar();
+		actionBar = getSupportActionBar();
 		actionBar.setHomeButtonEnabled(true);
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		
@@ -92,21 +93,45 @@ EditContactDialog.OnFragmentInteractionListener, OnClickListener {
 		}
 		actionBar.setSubtitle("connecting ...");
 
-		registerReceiver(registrationStatusReceiver, new IntentFilter(Common.ACTION_REGISTER));
+//		registerReceiver(registrationStatusReceiver, new IntentFilter(Common.ACTION_REGISTER));
 		gcmUtil = new GcmUtil(getApplicationContext());
+		
+		//Send hidden message for online-status
+		checkOnlineStatus();
+		
 	}
+	
+	private void checkOnlineStatus() {
+		new AsyncTask<Void, Void, String>() {
+			protected String doInBackground(Void... params) {
+				try{
+				 ServerUtilities.send(Common.ONLINE_QUESTION, profileEmail);
 
+				} catch (IOException ex) {
+					ex.printStackTrace();
+				}
+				return "ONLINE??";
+			}
+		}.execute(null, null, null);
+		getSupportActionBar().setSubtitle("offline");
+	}
+	
 	@Override 
 	public void onResume() {
 		super.onResume();
 		LocalBroadcastManager.getInstance(this).registerReceiver(contactListRefreshReceiver,
 				new IntentFilter("contactListRefresh"));
+		checkOnlineStatus();
 	}
 
 	private BroadcastReceiver contactListRefreshReceiver = new BroadcastReceiver() {
 
 		@Override
 		public void onReceive(Context context, Intent arg1) {
+			if(arg1.getBooleanExtra("onlineStatus", false)) {
+				actionBar.setSubtitle("online");
+				actionBar.show();
+			}
 			menu.invalidate();
 			menu.setMenu(R.layout.menu);
 			Log.e("ChatActivity","Data refresh");
@@ -219,28 +244,28 @@ EditContactDialog.OnFragmentInteractionListener, OnClickListener {
 
 	@Override
 	protected void onDestroy() {
-		unregisterReceiver(registrationStatusReceiver);
+		//unregisterReceiver(registrationStatusReceiver);
 		gcmUtil.cleanup();
 		super.onDestroy();
 	}
 
-	private BroadcastReceiver registrationStatusReceiver = new  BroadcastReceiver() {
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			if (intent != null && Common.ACTION_REGISTER.equals(intent.getAction())) {
-				switch (intent.getIntExtra(Common.EXTRA_STATUS, 100)) {
-				case Common.STATUS_SUCCESS:
-					getSupportActionBar().setSubtitle("online");
-					sendBtn.setEnabled(true);
-					break;
-
-				case Common.STATUS_FAILED:
-					getSupportActionBar().setSubtitle("offline");					
-					break;					
-				}
-			}
-		}
-	};	
+//	private BroadcastReceiver registrationStatusReceiver = new  BroadcastReceiver() {
+//		@Override
+//		public void onReceive(Context context, Intent intent) {
+//			if (intent != null && Common.ACTION_REGISTER.equals(intent.getAction())) {
+//				switch (intent.getIntExtra(Common.EXTRA_STATUS, 100)) {
+//				case Common.STATUS_SUCCESS:
+//					getSupportActionBar().setSubtitle("online");
+//					sendBtn.setEnabled(true);
+//					break;
+//
+//				case Common.STATUS_FAILED:
+//					getSupportActionBar().setSubtitle("offline");					
+//					break;					
+//				}
+//			}
+//		}
+//	};	
 
 
 
