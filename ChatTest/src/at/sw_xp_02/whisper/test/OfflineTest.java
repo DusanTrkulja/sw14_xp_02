@@ -19,6 +19,7 @@ public class OfflineTest extends
 ActivityInstrumentationTestCase2<MainActivity> {
 
 	private Solo solo;
+	@SuppressWarnings("unused")
 	private EditText message = null;
 	private final static int TIME_LIMIT = 5000;
 

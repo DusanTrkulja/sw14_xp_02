@@ -23,7 +23,7 @@
            android:layout_height="wrap_content"
            android:layout_alignParentRight="true"
            android:background="@drawable/buttonshape"
-           android:text="Send"
+           android:text="@string/send"
            android:textColor="@android:color/white" />
 
         <EditText
