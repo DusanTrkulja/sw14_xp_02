@@ -22,6 +22,8 @@ ActivityInstrumentationTestCase2<MainActivity> {
 	private Solo solo;
 	private EditText message;
 	private final static int TIME_LIMIT = 5000;
+	private boolean enable = true;
+	private boolean disable = false;
 
 	public MainActivityTest() {
 		super(MainActivity.class);
@@ -83,9 +85,10 @@ ActivityInstrumentationTestCase2<MainActivity> {
 	}
 
     public void testDeleteUser() {
-    	solo.assertCurrentActivity("ChatActivity", ChatActivity.class);
+    	solo.hideSoftKeyboard();
+    	solo.goBackToActivity("MainActivity");
+    	enableDebugMode(enable);
         String user = "dummy@dum.dum";
-
         addDummyUser(user);
         solo.clickLongOnText(user);
         solo.clickOnText("Delete");
