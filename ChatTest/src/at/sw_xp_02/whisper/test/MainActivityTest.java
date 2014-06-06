@@ -31,7 +31,7 @@ ActivityInstrumentationTestCase2<MainActivity> {
 
 	public void setUp() throws Exception {
 		solo = new Solo(getInstrumentation(), getActivity());	
-
+		
 	}
 	
 	
@@ -46,11 +46,13 @@ ActivityInstrumentationTestCase2<MainActivity> {
 //	}
 
 	private void addDummyUser(String email) {
-		solo.waitForDialogToOpen(TIME_LIMIT);
+		
 	    solo.clickOnActionBarItem(R.id.action_add);
+	    solo.waitForDialogToOpen(TIME_LIMIT);
         solo.typeText(0, email);
         solo.clickOnButton("OK");
-        solo.waitForDialogToClose();
+        solo.sleep(3000);
+        //solo.waitForDialogToClose();
 	}
 
 	public void testPreferenceActivity() {
@@ -86,11 +88,12 @@ ActivityInstrumentationTestCase2<MainActivity> {
 
     public void testDeleteUser() {
     	solo.hideSoftKeyboard();
-    	solo.goBackToActivity("MainActivity");
+    	//solo.goBackToActivity("MainActivity");
     	enableDebugMode(enable);
         String user = "dummy@dum.dum";
         addDummyUser(user);
         solo.clickLongOnText(user);
+        solo.sleep(1000);
         solo.clickOnText("Delete");
         assert(!solo.searchText(user));
     }
@@ -138,6 +141,7 @@ ActivityInstrumentationTestCase2<MainActivity> {
   	 String email = "jupaldupal@gmail.com";
   	 String email2 = "dummy@dum.dum";
   	 //addDummyUser(email);
+  	getActivity();
   	 solo.clickOnActionBarItem(R.id.action_add);
   	 //solo.clickOnText(email2);
   	 //solo.clickOnActionBarItem(R.id.action_add_contacts);
@@ -200,7 +204,7 @@ ActivityInstrumentationTestCase2<MainActivity> {
    }
   
    private void enableDebugMode(Boolean enable) {
-  	 solo.goBackToActivity("MainActivity");
+  	 //solo.goBackToActivity("MainActivity");
   	 solo.clickOnActionBarItem(R.id.action_add);
   	 if(enable)
   		 solo.typeText(0, Common.DEBUG);
