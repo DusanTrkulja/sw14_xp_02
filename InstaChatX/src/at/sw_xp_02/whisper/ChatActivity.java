@@ -248,7 +248,14 @@ EditContactDialog.OnFragmentInteractionListener, OnClickListener {
 		gcmUtil.cleanup();
 		super.onDestroy();
 	}
+@Override
+public void onBackPressed(){
+	Intent intent = new Intent(this, MainActivity.class);
+	intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+	intent.putExtra(Constants.STAY_ON_MAINSCREEN, true);
+	startActivity(intent);
 
+}
 //	private BroadcastReceiver registrationStatusReceiver = new  BroadcastReceiver() {
 //		@Override
 //		public void onReceive(Context context, Intent intent) {
