@@ -31,7 +31,7 @@ ActivityInstrumentationTestCase2<MainActivity> {
 		
 		turnWifi(false);
 		setMobileDataEnabled(getActivity(),false);
-		solo.goBackToActivity("MainActivity");
+		//solo.goBackToActivity("MainActivity");
 	}
 	
 //	private void enableDebugMode(Boolean enable) {
@@ -92,11 +92,10 @@ ActivityInstrumentationTestCase2<MainActivity> {
 	
 	@Override
 	public void tearDown() throws Exception {
-		solo.finishOpenedActivities();
-		
 		setMobileDataEnabled(getActivity(),true);
-
 		turnWifi(true);
+		solo.sleep(5000);
+		solo.finishOpenedActivities();
     
 	}
 }
