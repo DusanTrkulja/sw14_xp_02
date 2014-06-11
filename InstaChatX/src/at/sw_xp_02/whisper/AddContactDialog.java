@@ -67,8 +67,7 @@ public class AddContactDialog extends DialogFragment {
 						}
 
 						if(email.equals(Common.getPreferredEmail()) && !settings.getBoolean("debug", false)) {
-							Toast.makeText(AddContactDialog.this.getActivity(), "You cannot add yourself.", Toast.LENGTH_LONG).show();
-							alertDialog.dismiss();
+							et.setError("You cannot add yourself.");
 							return;
 						}
 

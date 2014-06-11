@@ -133,14 +133,24 @@ ActivityInstrumentationTestCase2<MainActivity> {
    }
    
    public void testInvalidEmail() {
-	  	 String email = "jupaldupal@gmail";
-	  	 solo.clickOnActionBarItem(R.id.action_add);
-	     solo.waitForView(EditText.class);
-	     solo.typeText(0, email);
-	     solo.waitForText("OK",1,TIME_LIMIT);
-	     solo.clickOnButton("OK");
-	     solo.getText("Invalid email!");
-	   }
+  	 String email = "jupaldupal@gmail";
+  	 solo.clickOnActionBarItem(R.id.action_add);
+     solo.waitForView(EditText.class);
+     solo.typeText(0, email);
+     solo.waitForText("OK",1,TIME_LIMIT);
+     solo.clickOnButton("OK");
+     solo.getText("Invalid email!");
+   }
+   
+   public void testAddMe() {
+  	 String email = Common.getPreferredEmail();
+  	 solo.clickOnActionBarItem(R.id.action_add);
+     solo.waitForView(EditText.class);
+     solo.typeText(0, email);
+     solo.waitForText("OK",1,TIME_LIMIT);
+     solo.clickOnButton("OK");
+     solo.getText("You cannot add yourself.");
+   }
    
    public void testSlidingContacts() {
   	 String email = "jupaldupal@gmail.com";
@@ -179,8 +189,6 @@ ActivityInstrumentationTestCase2<MainActivity> {
    }
    
    public void testAddContactInChatActivity() {
-	   
-
   	 String email = "jupaldupal@gmail.com";
   	 String email2 = "dummy@dum.dum";
   	 String email3 = "thisismy@test.user";
@@ -210,10 +218,6 @@ ActivityInstrumentationTestCase2<MainActivity> {
   	 solo.clickOnActionBarItem(R.id.action_show_contacts);
   	solo.waitForText("dummytext",1,TIME_LIMIT);
   	 solo.clickOnText("dummtext");
-   }
-   
-   public void testLayout(){
-	   //	solo.getCurrentActivity().getActionBar().
    }
    
    public void testAddUnknownUser(){
