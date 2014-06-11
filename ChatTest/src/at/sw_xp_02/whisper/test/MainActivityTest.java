@@ -143,6 +143,7 @@ ActivityInstrumentationTestCase2<MainActivity> {
    }
    
    public void testAddMe() {
+	 enableDebugMode(disable);
   	 String email = Common.getPreferredEmail();
   	 solo.clickOnActionBarItem(R.id.action_add);
      solo.waitForView(EditText.class);
@@ -243,10 +244,14 @@ ActivityInstrumentationTestCase2<MainActivity> {
   	 addDummyUser(email);
   	 solo.waitForText(email,1,TIME_LIMIT);
  	 //solo.clickOnText(email, 2);
-  	 solo.clickInList(1,0);
+  	 solo.clickInList(1);
   	 solo.waitForText("online",1,TIME_LIMIT);
   	 solo.getText("online");
   	 solo.goBack();
+  	 solo.clickLongInList(1);
+     solo.sleep(1000);
+     solo.waitForText("Delete",1,TIME_LIMIT);
+     solo.clickOnText("Delete");
  	 enableDebugMode(disable);
    }
    
