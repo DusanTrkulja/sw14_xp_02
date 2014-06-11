@@ -34,7 +34,8 @@
                  android:layout_toLeftOf="@+id/send_btn"
                  android:inputType="text|textMultiLine"
                  android:maxLines="3"
-                 android:singleLine="false" >
+                 android:singleLine="false"
+                 android:textIsSelectable="true" >
 
            </EditText>
 
