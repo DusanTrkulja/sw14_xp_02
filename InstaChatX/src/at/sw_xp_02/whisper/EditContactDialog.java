@@ -51,7 +51,6 @@ public class EditContactDialog extends DialogFragment {
 					ContentValues values = new ContentValues(1);
 					values.put(DataProvider.COL_NAME, name);
 					ctx.getContentResolver().update(Uri.withAppendedPath(DataProvider.CONTENT_URI_PROFILE, profileId), values, null, null);
-					
 					mListener.onEditContact(name);
 				}
 			})

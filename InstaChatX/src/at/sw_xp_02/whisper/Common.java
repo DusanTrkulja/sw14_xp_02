@@ -20,6 +20,11 @@ public class Common extends Application {
 	public static final String ONLINE_ANSWER = "3d36a0b3d6db72ce7db95ff6d6c659bce1e04b5e";
 	public static final String DEBUG = "#debug*!";
 	public static final String NODEBUG = "#nodebug*!";
+	public static final String OTRPREFIX = "?ITSOTR?";
+	public static final String OTRQUESTION = "?OTRQ?";
+	public static final String OTRANSWERWTIHKEY = "!OTRA!";
+	public static final String OTRSIGNATURE = "!OTRK!";
+	public static final String OTRSIGNATUREANSWER = "!OTROK";
 	public static final int STATUS_SUCCESS = 1;
 	public static final int STATUS_FAILED = 0;
 	public static String[] email_arr;

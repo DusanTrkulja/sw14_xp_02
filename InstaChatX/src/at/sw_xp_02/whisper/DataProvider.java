@@ -15,6 +15,7 @@ public class DataProvider extends ContentProvider {
 
 	public static final Uri CONTENT_URI_MESSAGES = Uri.parse("content://at.sw_xp_02.whisper.provider/messages");
 	public static final Uri CONTENT_URI_PROFILE = Uri.parse("content://at.sw_xp_02.whisper.provider/profile");
+	public static final Uri CONTENT_URI_KEYS = Uri.parse("content://at.sw_xp_02.whisper.provider/keys");
 
 	public static final String COL_ID = "_id";
 
@@ -22,6 +23,10 @@ public class DataProvider extends ContentProvider {
 
     	INCOMING, OUTGOING
     }
+	
+	public enum EncryptionStatus {
+		PLAIN, VERYFYING, ENCRYPTED
+	}
 	
 	//parameters recognized by demo server
 	public static final String SENDER_EMAIL 		= "senderEmail";
@@ -42,6 +47,17 @@ public class DataProvider extends ContentProvider {
 	public static final String COL_NAME = "name";
 	public static final String COL_EMAIL = "email";
 	public static final String COL_COUNT = "count";
+	
+	// TABLE KEYS
+	public static final String TABLE_KEYS = "keys";
+	public static final String COL_FOREIGN_EMAIL = "foreign";
+	public static final String COL_REMOTE_KEY = "remotekey";
+	public static final String COL_LOCAL_PRIVATE_KEY = "localprivate";
+	public static final String COL_LOCAL_PUBLIC_KEY = "localpublic";
+	public static final String COL_LOCAL_FINGERPRINT = "localfingerprints";
+	public static final String COL_REMOTE_FINGERPRINT = "remotefingerprints";
+	public static final String COL_ENCRYPTION_STATUS = "status";
+	public static final String COL_VERIFIED = "verified";
 
 	private DbHelper dbHelper;
 
@@ -49,6 +65,8 @@ public class DataProvider extends ContentProvider {
 	private static final int MESSAGES_SINGLE_ROW = 2;
 	private static final int PROFILE_ALLROWS = 3;
 	private static final int PROFILE_SINGLE_ROW = 4;
+	private static final int KEYS_ALLROWS = 5;
+	private static final int KEYS_SINGLE_ROW = 6;
 
 	private static final UriMatcher uriMatcher;
 	static {
@@ -57,6 +75,8 @@ public class DataProvider extends ContentProvider {
 		uriMatcher.addURI("at.sw_xp_02.whisper.provider", "messages/#", MESSAGES_SINGLE_ROW);
 		uriMatcher.addURI("at.sw_xp_02.whisper.provider", "profile", PROFILE_ALLROWS);
 		uriMatcher.addURI("at.sw_xp_02.whisper.provider", "profile/#", PROFILE_SINGLE_ROW);
+		uriMatcher.addURI("at.sw_xp_02.whisper.provider", "keys", KEYS_ALLROWS);
+		uriMatcher.addURI("at.sw_xp_02.whisper.provider", "keys/#", KEYS_SINGLE_ROW);
 	}
 
 	@Override
@@ -88,6 +108,15 @@ public class DataProvider extends ContentProvider {
 			qb.setTables(TABLE_PROFILE);
 			qb.appendWhere("_id = " + uri.getLastPathSegment());
 			break;
+			
+		case KEYS_ALLROWS:
+			qb.setTables(TABLE_KEYS);
+			break;			
+
+		case KEYS_SINGLE_ROW:
+			qb.setTables(TABLE_KEYS);
+			qb.appendWhere("_id = " + uri.getLastPathSegment());
+			break;
 
 		default:
 			throw new IllegalArgumentException("Unsupported URI: " + uri);			
@@ -116,6 +145,9 @@ public class DataProvider extends ContentProvider {
 		case PROFILE_ALLROWS:
 			id = db.insertOrThrow(TABLE_PROFILE, null, values);
 			break;
+			
+		case KEYS_ALLROWS:
+			id = db.insertOrThrow(TABLE_KEYS, null, values);
 
 		default:
 			throw new IllegalArgumentException("Unsupported URI: " + uri);
@@ -147,6 +179,15 @@ public class DataProvider extends ContentProvider {
 		case PROFILE_SINGLE_ROW:
 			count = db.update(TABLE_PROFILE, values, "_id = ?", new String[]{uri.getLastPathSegment()});
 			break;
+			
+		case KEYS_ALLROWS:
+			count = db.update(TABLE_KEYS, values, selection, selectionArgs);
+			break;			
+
+		case KEYS_SINGLE_ROW:
+			count = db.update(TABLE_KEYS, values, "_id = ?", new String[]{uri.getLastPathSegment()});
+			break;
+
 
 		default:
 			throw new IllegalArgumentException("Unsupported URI: " + uri);			
@@ -176,6 +217,14 @@ public class DataProvider extends ContentProvider {
 
 		case PROFILE_SINGLE_ROW:
 			count = db.delete(TABLE_PROFILE, "_id = ?", new String[]{uri.getLastPathSegment()});
+			break;
+			
+		case KEYS_ALLROWS:
+			count = db.delete(TABLE_KEYS, selection, selectionArgs);
+			break;			
+
+		case KEYS_SINGLE_ROW:
+			count = db.delete(TABLE_KEYS, "_id = ?", new String[]{uri.getLastPathSegment()});
 			break;
 
 		default:
@@ -214,6 +263,17 @@ public class DataProvider extends ContentProvider {
 					+ COL_NAME 	  +" text, "
 					+ COL_EMAIL   +" text unique, "
 					+ COL_COUNT   +" integer default 0);");
+			
+			db.execSQL("create table keys("
+					+ "_id integer primary key autoincrement, "
+					+ COL_FOREIGN_EMAIL   +" text unique, "
+					+ COL_REMOTE_KEY	  +" text, "
+					+ COL_LOCAL_PRIVATE_KEY	  +" text, "
+					+ COL_LOCAL_PUBLIC_KEY +" text, "
+					+ COL_LOCAL_FINGERPRINT +" text, "
+					+ COL_REMOTE_FINGERPRINT +" text, "
+					+ COL_ENCRYPTION_STATUS   +" integer default 0);"
+					+ COL_VERIFIED + " integer default 0);");
 		}
 
 		@Override

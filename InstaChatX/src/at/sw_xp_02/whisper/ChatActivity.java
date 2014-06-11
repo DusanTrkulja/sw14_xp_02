@@ -2,6 +2,9 @@ package at.sw_xp_02.whisper;
 
 import java.io.IOException;
 
+import net.java.otr4j.OtrKeyManagerImpl;
+import net.java.otr4j.session.SessionID;
+import net.java.otr4j.session.SessionStatus;
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -30,6 +33,7 @@ import at.sw_xp_02.whisper.DataProvider.MessageType;
 import at.sw_xp_02.whisper.client.Constants;
 import at.sw_xp_02.whisper.client.GcmUtil;
 import at.sw_xp_02.whisper.client.ServerUtilities;
+import at.sw_xp_02.whisper.otr.OtrChatManager;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
@@ -46,6 +50,7 @@ EditContactDialog.OnFragmentInteractionListener, OnClickListener {
 	public static PhotoCache photoCache;
 	SlidingMenu menu;
 	ActionBar actionBar;
+	private OtrKeyManagerImpl keyManager;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -98,9 +103,21 @@ EditContactDialog.OnFragmentInteractionListener, OnClickListener {
 		
 		//Send hidden message for online-status
 		checkOnlineStatus();
+		if(!checkSessionStatus()) {
+			//TODO Start session
+			
+		}
 		
 	}
 	
+	private boolean checkSessionStatus() {
+		Cursor c = getContentResolver().query(DataProvider.CONTENT_URI_KEYS, null, DataProvider.COL_FOREIGN_EMAIL + " = ?", new String[] {profileEmail}, null);
+		int encrypted = c.getInt(c.getColumnIndex(DataProvider.COL_ENCRYPTION_STATUS));
+		int verified = c.getInt(c.getColumnIndex(DataProvider.COL_VERIFIED));
+		if(encrypted == 2 && verified != 0)
+			return true;
+		return false;
+	}
 	private void checkOnlineStatus() {
 		new AsyncTask<Void, Void, String>() {
 			protected String doInBackground(Void... params) {

@@ -39,10 +39,12 @@ public class GcmBroadcastReceiver extends BroadcastReceiver {
 		PowerManager mPowerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
 		WakeLock mWakeLock = mPowerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, TAG);
 		mWakeLock.acquire();
+		
 		try {
 			GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(context);
 			String messageType = gcm.getMessageType(intent);
 			String msg = intent.getStringExtra(DataProvider.COL_MESSAGE);
+			String prefix = msg.substring(0, Common.OTRPREFIX.length()-1);
 			senderEmail = intent.getStringExtra(DataProvider.COL_SENDER_EMAIL);
 			Log.d("Msg Received", "Received message: " + msg);
 			Log.d("Msg Received", "Received from: "+ intent.getStringExtra(DataProvider.COL_SENDER_EMAIL));
@@ -64,6 +66,10 @@ public class GcmBroadcastReceiver extends BroadcastReceiver {
 			} else if(msg.equals(Common.ONLINE_ANSWER)) {
 				Intent intent2 = new Intent("contactListRefresh");
 				intent2.putExtra("onlineStatus", true);
+				LocalBroadcastManager.getInstance(context).sendBroadcast(intent2);
+			} else if(prefix.equals(Common.OTRPREFIX)) {
+				Intent intent2 = new Intent("OTRMessage");
+				intent2.putExtra("message", msg.substring(Common.OTRPREFIX.length()));
 				LocalBroadcastManager.getInstance(context).sendBroadcast(intent2);
 			} else {
 				String senderEmail = intent.getStringExtra(DataProvider.COL_SENDER_EMAIL);
