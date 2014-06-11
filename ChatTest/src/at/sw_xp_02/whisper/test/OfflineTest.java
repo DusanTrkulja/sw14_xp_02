@@ -33,20 +33,12 @@ ActivityInstrumentationTestCase2<MainActivity> {
 		setMobileDataEnabled(getActivity(),false);
 		//solo.goBackToActivity("MainActivity");
 	}
-	
-//	private void enableDebugMode(Boolean enable) {
-//		solo.goBackToActivity("MainActivity"); 
-//		solo.clickOnActionBarItem(R.id.action_add);
-//		 if(enable)
-//			 solo.typeText(0, "#debug*!");
-//		 else
-//			 solo.typeText(0, "#nodebug*!");
-//     solo.clickOnButton(1);
-//	}
+
 	
 	private void addDummyUser(String email) {
 	    solo.clickOnActionBarItem(R.id.action_add);
         solo.typeText(0, email);
+        solo.waitForText("OK",1,TIME_LIMIT);
         solo.clickOnButton("OK");
 	}
 	
@@ -82,10 +74,12 @@ ActivityInstrumentationTestCase2<MainActivity> {
 	public void testOfflineMessageFailure() {
 		String email = "jupaldupal@gmail.com";
 		addDummyUser(email);
+		solo.waitForText(email,1,TIME_LIMIT);
 		solo.clickOnText(email);
 		solo.assertCurrentActivity("ChatActivity", ChatActivity.class);
 		message = (EditText) solo.getView(R.id.msg_edit);
 		solo.typeText(0, "Test Message");
+		solo.waitForText("Send",1,TIME_LIMIT);
 		solo.clickOnButton("Send");
 		solo.waitForText("Message could not be sent",1,TIME_LIMIT);
 	}

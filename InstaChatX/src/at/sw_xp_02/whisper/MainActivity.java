@@ -8,6 +8,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ApplicationInfo;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.net.ConnectivityManager;
@@ -23,12 +24,12 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
@@ -52,9 +53,9 @@ public class MainActivity extends ActionBarActivity implements LoaderManager.Loa
 		
 		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
 		boolean stayOnMainscreen = getIntent().getBooleanExtra(Constants.STAY_ON_MAINSCREEN,false);
-		boolean debug = settings.getBoolean("debug", false);
+		boolean isDebuggable =  ( 0 != ( getApplicationInfo().flags &= ApplicationInfo.FLAG_DEBUGGABLE ) );
 		
-		if(!stayOnMainscreen && !debug) {
+		if(!stayOnMainscreen && !isDebuggable) {
 			String lastMessageTo = settings.getString("lastMessageTo", null);
 			if(lastMessageTo != null) {
 				Intent intent = new Intent(this, ChatActivity.class);
@@ -93,7 +94,7 @@ public class MainActivity extends ActionBarActivity implements LoaderManager.Loa
       		    // This would allow you get several email addresses
               // if the email addresses were stored in an array
       		    String email = emailCur.getString(emailCur.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA));
-      	 	    String emailType = emailCur.getString(emailCur.getColumnIndex(ContactsContract.CommonDataKinds.Email.TYPE)); 
+
       	 	    try {
       	 	    	ContentValues values = new ContentValues(2);
       	 	    	values.put(DataProvider.COL_NAME, name);

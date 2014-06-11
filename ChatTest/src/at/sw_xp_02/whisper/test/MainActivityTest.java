@@ -1,24 +1,17 @@
 package at.sw_xp_02.whisper.test;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.sax.StartElementListener;
 import android.test.ActivityInstrumentationTestCase2;
-import android.view.View;
 import android.widget.EditText;
-import android.widget.ListView;
 import at.sw_xp_02.whisper.ChatActivity;
 import at.sw_xp_02.whisper.Common;
 import at.sw_xp_02.whisper.DataProvider;
 import at.sw_xp_02.whisper.MainActivity;
 import at.sw_xp_02.whisper.R;
-import at.sw_xp_02.whisper.SettingsActivity;
-import at.sw_xp_02.whisper.client.Constants;
 import at.sw_xp_02.whisper.client.ServerUtilities;
 
 import com.robotium.solo.Solo;
@@ -42,57 +35,20 @@ ActivityInstrumentationTestCase2<MainActivity> {
 		solo = new Solo(getInstrumentation(), currentActivity);
 		if (!(activityName.equals("MainActivity"))){
 			solo.hideSoftKeyboard();
-//			//solo.sleep(2000);
 			solo.goBackToActivity("MainActivity");       
-//			solo.sleep(2000);
-			//enableDebugMode(enable);
-//			addDummyUser("blargl@blabla.com");
-//			//solo.sleep(1000);
-//			//solo.clickOnActionBarHomeButton();// pressMenuItem(R.id.home);
-//			
-//			solo.searchText("blargl");
 		}
 	}		
 		
 	
 	
-//	
-//	public void testDeleteAllContacts() {
-//		ArrayList<View> list = solo.getCurrentViews();
-//		
-//		while(list.size() != 0) {
-//			solo.clickLongInList(0);
-//			solo.clickOnText("Delete");		
-//		}
-//	}
-	
-//	public void testGoBackFromChatActivity(){
-//		
-//			// do something
-////			Intent intent = new Intent(getActivity(), MainActivity.class);
-////			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-////			intent.putExtra(Constants.STAY_ON_MAINSCREEN, true);
-//			//solo.waitForActivity(MainActivity.class);
-//			solo.hideSoftKeyboard();
-//			//solo.sleep(2000);
-//			solo.goBack();
-//			solo.sleep(2000);
-//			enableDebugMode(enable);
-//			addDummyUser("blargl@blabla.com");
-//			//solo.sleep(1000);
-//			//solo.clickOnActionBarHomeButton();// pressMenuItem(R.id.home);
-//			
-//			solo.searchText("blargl");
-//		
-//	}
 	private void addDummyUser(String email) {
 		
 	    solo.clickOnActionBarItem(R.id.action_add);
-	    solo.waitForDialogToOpen(TIME_LIMIT);
+	    solo.waitForView(EditText.class);
         solo.typeText(0, email);
+        solo.waitForText("OK",1,TIME_LIMIT);
         solo.clickOnButton("OK");
-        solo.sleep(3000);
-        //solo.waitForDialogToClose();
+        solo.waitForDialogToClose();
 	}
 	
 	
@@ -100,14 +56,18 @@ ActivityInstrumentationTestCase2<MainActivity> {
 	public void testPreferenceActivity() {
 		solo.assertCurrentActivity("MainActivity", MainActivity.class);
 		solo.clickOnActionBarItem(R.id.action_settings);
+		solo.waitForText("Vibrate",1,TIME_LIMIT);
 		solo.clickOnText("Vibrate");
+		solo.waitForText("New message notifications",1,TIME_LIMIT);
 		solo.clickOnText("New message notifications");
 		solo.sleep(2000);
 		boolean checkboxnotify = solo.isCheckBoxChecked(0);
 		boolean checkboxvibrate = solo.isCheckBoxChecked(1);
 		assertFalse(checkboxnotify);
 		assertFalse(checkboxvibrate);
+		solo.waitForText("New message notifications",1,TIME_LIMIT);
 		solo.clickOnText("New message notifications");
+		solo.waitForText("Vibrate",1,TIME_LIMIT);
 		solo.clickOnText("Vibrate");
 		solo.sleep(500);
 		checkboxnotify = solo.isCheckBoxChecked(0);
@@ -119,12 +79,11 @@ ActivityInstrumentationTestCase2<MainActivity> {
 	
 	public void testContactChanges(){
 		addDummyUser("thisismydummy@user.com");
+		solo.waitForText("thisismydumm",1,TIME_LIMIT);
 		solo.clickOnText("thisismydummy");
 		solo.clickOnActionBarItem(R.id.action_edit);
-		//solo.typeText(0, "blargl");
-		//solo.typeText(0, "arglbla");
 		solo.enterText(0, "dings");
-		solo.searchText("thisismydummydingäääää");
+		solo.waitForText("thisismydummydings",1,TIME_LIMIT);
 		
 		
 	}
@@ -132,34 +91,29 @@ ActivityInstrumentationTestCase2<MainActivity> {
 		//solo.assertCurrentActivity("ChatActivity", ChatActivity.class);
 		String email = "jupaldupal@gmail.com";
 		addDummyUser(email);
+		solo.waitForText(email,1,TIME_LIMIT);
 		solo.clickOnText(email);
 		//solo.assertCurrentActivity("ChatActivity", ChatActivity.class);
 		message = (EditText) solo.getView(R.id.msg_edit);
+		solo.waitForView(EditText.class);
 		solo.typeText(0, "Test Message");
-		solo.waitForText("Send");
+		solo.waitForText("Send",1,TIME_LIMIT);
+		solo.waitForText("Send",1,TIME_LIMIT);
 		solo.clickOnButton("Send");
 		solo.waitForText("Test Message",1,TIME_LIMIT);
 		assertTrue(message.getText().length()== 0);
 		
 	}
-	
-//	public void testOfflineMessageFailure() {
-//		solo.clickOnText("");
-//		solo.assertCurrentActivity("ChatActivity", ChatActivity.class);
-//		message = (EditText) solo.getView(R.id.msg_edit);
-//		solo.typeText(0, "Test Message");
-//		solo.clickOnButton("Send");
-//		solo.waitForText("Message could not be sent");
-//	}
 
     public void testDeleteUser() {
     	solo.hideSoftKeyboard();
-    	//solo.goBackToActivity("MainActivity");
     	enableDebugMode(enable);
         String user = "dummy@dum.dum";
         addDummyUser(user);
+        solo.waitForText(user,1,TIME_LIMIT);
         solo.clickLongOnText(user);
         solo.sleep(1000);
+        solo.waitForText("Delete",1,TIME_LIMIT);
         solo.clickOnText("Delete");
         assert(!solo.searchText(user));
     }
@@ -169,7 +123,9 @@ ActivityInstrumentationTestCase2<MainActivity> {
    public void testContactAdd() {
   	 String email = "jupaldupal@gmail.com";
   	 solo.clickOnActionBarItem(R.id.action_add);
+  	solo.waitForView(EditText.class);
      solo.typeText(0, email);
+     solo.waitForText("OK",1,TIME_LIMIT);
      solo.clickOnButton("OK");
      solo.waitForText(email,1,TIME_LIMIT);
    }
@@ -179,9 +135,11 @@ ActivityInstrumentationTestCase2<MainActivity> {
   	 String email2 = "dummy@dum.dum";
   	 addDummyUser(email);
   	 addDummyUser(email2);
+  	solo.waitForText(email,1,TIME_LIMIT);
   	 solo.clickOnText(email);
   	 solo.assertCurrentActivity("ChatActivity", ChatActivity.class);
   	 solo.scrollViewToSide(solo.getView(R.id.msg_list), Solo.RIGHT);
+  	solo.waitForText("dummy",1,TIME_LIMIT);
   	 solo.clickOnText("dummy");
    }
    
@@ -191,30 +149,38 @@ ActivityInstrumentationTestCase2<MainActivity> {
   	 String dummymessage = "Top of the mountain";
   	 addDummyUser(email);
   	 addDummyUser(email2);
+  	solo.waitForText(email2,1,TIME_LIMIT);
   	 solo.clickOnText(email2);
+  	solo.waitForView(EditText.class);
   	 solo.typeText(0, dummymessage);
+  	solo.waitForText("Send",1,TIME_LIMIT);
   	 solo.clickOnButton("Send");
   	 solo.goBack();
   	 solo.clickOnText(email);
   	// solo.assertCurrentActivity("ChatActivity", ChatActivity.class);
   	 solo.scrollViewToSide(solo.getView(R.id.msg_list), Solo.RIGHT);
+  	 solo.waitForText("dummy",1,TIME_LIMIT);
   	 solo.clickOnText("dummy");
   	 //solo.assertCurrentActivity("ChatActivity", ChatActivity.class);
   	 solo.waitForText(dummymessage,1,TIME_LIMIT);
    }
    
    public void testAddContactInChatActivity() {
-	   solo.goBackToActivity("MainActivity");
+	   
+
   	 String email = "jupaldupal@gmail.com";
   	 String email2 = "dummy@dum.dum";
   	 String email3 = "thisismy@test.user";
   	 addDummyUser(email3);
   	 //solo.clickOnActionBarItem(R.id.action_add);
+  	solo.waitForText(email3,1,TIME_LIMIT);
   	 solo.clickOnText(email3);
   	 solo.hideSoftKeyboard();
   	 solo.sleep(1000);
   	 solo.clickOnActionBarItem(R.id.action_add_contacts);
+  	solo.waitForView(EditText.class);
      solo.typeText(0, email2);
+     solo.waitForText("OK",1,TIME_LIMIT);
      solo.clickOnButton("OK");
      //solo.clickOnActionBarItem(R.id.action_show_contacts);
   	 solo.goBack();
@@ -226,28 +192,14 @@ ActivityInstrumentationTestCase2<MainActivity> {
   	 String email2 = "dummtext@dum.dum";
   	 addDummyUser(email);
   	 addDummyUser(email2);
+  	solo.waitForText(email,1,TIME_LIMIT);
   	 solo.clickOnText(email);
   	 solo.clickOnActionBarItem(R.id.action_show_contacts);
+  	solo.waitForText("dummytext",1,TIME_LIMIT);
   	 solo.clickOnText("dummtext");
    }
    
    
-//   public void testReceiveMessage() {
-//	   String debug = "#debug*!";
-//	   String email = Common.getPreferredEmail();
-//	   addDummyUser(debug);
-//	   solo.waitForText("DEBUG-MODE Enabled.");
-//	   addDummyUser(email);
-//	   solo.clickOnText(email);
-//	   //solo.assertCurrentActivity("ChatActivity", ChatActivity.class);
-//	   message = (EditText) solo.getView(R.id.msg_edit);
-//	   solo.typeText(0, "Test Message");
-//	   solo.clickOnButton("Send");
-//	   solo.getText("Test Message");
-//	   
-//	   
-//	   
-//   }
    
    public void testAddUnknownUser(){
 	//public static void send(String msg, String to) throws IOException {
@@ -263,20 +215,21 @@ ActivityInstrumentationTestCase2<MainActivity> {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		assert(!solo.searchText("jowossoll.denndos@whatevermail.com"));	
+		assert(!solo.waitForText("jowossoll.denndos@whatevermail.com",1,TIME_LIMIT));	
 		}
    
    public void testOnlineStatus() {
   	 enableDebugMode(true);
   	 addDummyUser(Common.getPreferredEmail());
   	 solo.clickOnText(Common.getPreferredEmail());
-  	 solo.waitForText("online", 1, 5000);
+  	 solo.waitForText("online", 1, TIME_LIMIT);
    }
   
    private void enableDebugMode(Boolean enable) {
   	 //solo.goBackToActivity("MainActivity");
   	 solo.clickOnActionBarItem(R.id.action_add);
-  	 if(enable)
+  	solo.waitForView(EditText.class);
+  	 if(enable) 
   		 solo.typeText(0, Common.DEBUG);
   	 else
   		 solo.typeText(0, Common.NODEBUG);
