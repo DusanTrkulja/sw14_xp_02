@@ -4,9 +4,11 @@ import android.app.Activity;
 import android.app.ListFragment;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,10 +36,10 @@ public class SlidingMenuFragment extends ListFragment implements OnItemClickList
 		ContactCursorAdapter adapter = new ContactCursorAdapter(getActivity(),getActivity().getBaseContext(),c);
 		getListView().setOnItemClickListener(this);
 		setListAdapter(adapter);
-		
+
 	}
 
-	
+
 	public class ContactCursorAdapter extends CursorAdapter {
 
 		private LayoutInflater mInflater;
@@ -58,6 +60,12 @@ public class SlidingMenuFragment extends ListFragment implements OnItemClickList
 			itemLayout.setTag(holder);
 			holder.icon = (ImageView) itemLayout.findViewById(R.id.row_icon);
 			holder.title = (TextView) itemLayout.findViewById(R.id.row_title);
+			SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
+			if(settings.getBoolean("contactmenu_inverted_color", false))  {
+				holder.title.setBackgroundColor(Color.DKGRAY);
+				holder.title.setTextColor(Color.WHITE);
+				holder.icon.setBackgroundColor(Color.DKGRAY);
+			} 
 			return itemLayout;
 		}
 
@@ -68,11 +76,12 @@ public class SlidingMenuFragment extends ListFragment implements OnItemClickList
 			holder.title.setText(cursor.getString(cursor.getColumnIndex(DataProvider.COL_NAME)));
 			int count = cursor.getInt(cursor.getColumnIndex(DataProvider.COL_COUNT));
 			if(count > 0) {
-			holder.badge = new BadgeView(getActivity(), holder.icon);
-			holder.badge.setTextColor(Color.BLACK);
-			holder.badge.setText(""+count);
-			
-			holder.badge.show();
+				
+				holder.badge = new BadgeView(getActivity(), holder.icon);
+				holder.badge.setTextColor(Color.BLACK);
+				holder.badge.setText(""+count);
+
+				holder.badge.show();
 			}
 		}
 	}
@@ -89,7 +98,7 @@ public class SlidingMenuFragment extends ListFragment implements OnItemClickList
 		intent.putExtra(Common.PROFILE_ID, String.valueOf(arg3));
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
-		
+
 	}
 
 }

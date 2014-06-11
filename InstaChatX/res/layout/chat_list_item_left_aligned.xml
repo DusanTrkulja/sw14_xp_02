@@ -37,6 +37,7 @@
         android:ellipsize="marquee"
         android:gravity="center"
         android:textColor="#FFFFFF"
-        android:background="@drawable/chat_in" />
+        android:background="@drawable/chat_in"
+        android:textIsSelectable="true" />
 
 </RelativeLayout>
