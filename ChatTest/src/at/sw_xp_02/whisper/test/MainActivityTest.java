@@ -242,7 +242,8 @@ ActivityInstrumentationTestCase2<MainActivity> {
   	 String email = Common.getPreferredEmail();
   	 addDummyUser(email);
   	 solo.waitForText(email,1,TIME_LIMIT);
- 	 solo.clickOnText(email, 2);
+ 	 //solo.clickOnText(email, 2);
+  	 solo.clickInList(1,0);
   	 solo.waitForText("online",1,TIME_LIMIT);
   	 solo.getText("online");
   	 solo.goBack();
