@@ -6,16 +6,5 @@
         android:fragment="at.sw_xp_02.whisper.SettingsActivity$MessagingPreferenceFragment"
         android:title="pref_header_messaging" />
 
-    <!-- These settings headers are only used on tablets. -->
-
-    <header
-        android:fragment="at.sw_xp_02.whisper.SettingsActivity$GeneralPreferenceFragment"
-        android:title="@string/pref_header_general" />
-    <header
-        android:fragment="at.sw_xp_02.whisper.SettingsActivity$NotificationPreferenceFragment"
-        android:title="@string/pref_header_notifications" />
-    <header
-        android:fragment="at.sw_xp_02.whisper.SettingsActivity$DataSyncPreferenceFragment"
-        android:title="@string/pref_header_data_sync" />
 
 </preference-headers>
