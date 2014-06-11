@@ -61,11 +61,6 @@ public class SlidingMenuFragment extends ListFragment implements OnItemClickList
 			holder.icon = (ImageView) itemLayout.findViewById(R.id.row_icon);
 			holder.title = (TextView) itemLayout.findViewById(R.id.row_title);
 			SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
-			if(settings.getBoolean("contactmenu_inverted_color", false))  {
-				holder.title.setBackgroundColor(Color.DKGRAY);
-				holder.title.setTextColor(Color.WHITE);
-				holder.icon.setBackgroundColor(Color.DKGRAY);
-			} 
 			return itemLayout;
 		}
 

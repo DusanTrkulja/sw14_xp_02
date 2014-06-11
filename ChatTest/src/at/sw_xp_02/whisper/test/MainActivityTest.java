@@ -23,7 +23,7 @@ ActivityInstrumentationTestCase2<MainActivity> {
 	private EditText message;
 	private final static int TIME_LIMIT = 5000;
 	private boolean enable = true;
-	//private boolean disable = false;
+	private boolean disable = false;
 
 	public MainActivityTest() {
 		super(MainActivity.class);
@@ -116,8 +116,8 @@ ActivityInstrumentationTestCase2<MainActivity> {
         solo.waitForText("Delete",1,TIME_LIMIT);
         solo.clickOnText("Delete");
         assert(!solo.searchText(user));
+        enableDebugMode(disable);
     }
-    
     
     
    public void testContactAdd() {
@@ -127,8 +127,18 @@ ActivityInstrumentationTestCase2<MainActivity> {
      solo.typeText(0, email);
      solo.waitForText("OK",1,TIME_LIMIT);
      solo.clickOnButton("OK");
-     solo.waitForText(email,1,TIME_LIMIT);
+     solo.getText(email);
    }
+   
+   public void testInvalidEmail() {
+	  	 String email = "jupaldupal@gmail";
+	  	 solo.clickOnActionBarItem(R.id.action_add);
+	     solo.waitForView(EditText.class);
+	     solo.typeText(0, email);
+	     solo.waitForText("OK",1,TIME_LIMIT);
+	     solo.clickOnButton("OK");
+	     solo.getText("Invalid email!");
+	   }
    
    public void testSlidingContacts() {
   	 String email = "jupaldupal@gmail.com";
@@ -145,7 +155,7 @@ ActivityInstrumentationTestCase2<MainActivity> {
    
    public void testSlidingContactsChange() {
   	 String email = "jupaldupal@gmail.com";
-  	 String email2 = "dummy@dum.dum";
+  	 String email2 = "dummyyy@dum.dum";
   	 String dummymessage = "Top of the mountain";
   	 addDummyUser(email);
   	 addDummyUser(email2);
@@ -159,10 +169,11 @@ ActivityInstrumentationTestCase2<MainActivity> {
   	 solo.clickOnText(email);
   	// solo.assertCurrentActivity("ChatActivity", ChatActivity.class);
   	 solo.scrollViewToSide(solo.getView(R.id.msg_list), Solo.RIGHT);
-  	 solo.waitForText("dummy",1,TIME_LIMIT);
-  	 solo.clickOnText("dummy");
+  	 solo.waitForText("dummyyy",1,TIME_LIMIT);
+  	 solo.clickOnText("dummyyy");
   	 //solo.assertCurrentActivity("ChatActivity", ChatActivity.class);
   	 solo.waitForText(dummymessage,1,TIME_LIMIT);
+  	 solo.getText(dummymessage);
    }
    
    public void testAddContactInChatActivity() {
@@ -184,7 +195,7 @@ ActivityInstrumentationTestCase2<MainActivity> {
      solo.clickOnButton("OK");
      //solo.clickOnActionBarItem(R.id.action_show_contacts);
   	 solo.goBack();
-     solo.waitForText("dummy",1,TIME_LIMIT);
+     solo.getText("dummy");
    }
    
    public void testContactMenuOptionBar() {
@@ -199,7 +210,9 @@ ActivityInstrumentationTestCase2<MainActivity> {
   	 solo.clickOnText("dummtext");
    }
    
-   
+   public void testLayout(){
+	   //	solo.getCurrentActivity().getActionBar().
+   }
    
    public void testAddUnknownUser(){
 	//public static void send(String msg, String to) throws IOException {
@@ -219,10 +232,22 @@ ActivityInstrumentationTestCase2<MainActivity> {
 		}
    
    public void testOnlineStatus() {
-  	 enableDebugMode(true);
-  	 addDummyUser(Common.getPreferredEmail());
-  	 solo.clickOnText(Common.getPreferredEmail());
-  	 solo.waitForText("online", 1, TIME_LIMIT);
+  	 enableDebugMode(enable);
+  	 String email = Common.getPreferredEmail();
+  	 addDummyUser(email);
+  	 solo.waitForText(email,1,TIME_LIMIT);
+ 	 solo.clickOnText(email, 2);
+  	 solo.waitForText("online",1,TIME_LIMIT);
+  	 solo.getText("online");
+  	 solo.goBack();
+ 	 enableDebugMode(disable);
+   }
+   
+   public void testDebugMode(){
+	   enableDebugMode(enable);
+	   solo.getText("DEBUG-MODE Enabled.");
+	   enableDebugMode(disable);
+	   solo.getText("DEBUG-MODE Disabled.");
    }
   
    private void enableDebugMode(Boolean enable) {
@@ -235,6 +260,7 @@ ActivityInstrumentationTestCase2<MainActivity> {
   		 solo.typeText(0, Common.NODEBUG);
      solo.clickOnButton(1);
    }
+   
    
 	@Override
 	public void tearDown() throws Exception {
