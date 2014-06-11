@@ -84,6 +84,7 @@ ActivityInstrumentationTestCase2<MainActivity> {
 		solo.clickOnActionBarItem(R.id.action_edit);
 		solo.enterText(0, "dings");
 		solo.waitForText("thisismydummydings",1,TIME_LIMIT);
+		solo.getText("thisismydummydings");
 		
 		
 	}
@@ -101,6 +102,7 @@ ActivityInstrumentationTestCase2<MainActivity> {
 		solo.waitForText("Send",1,TIME_LIMIT);
 		solo.clickOnButton("Send");
 		solo.waitForText("Test Message",1,TIME_LIMIT);
+		solo.getText("Test Message");
 		assertTrue(message.getText().length()== 0);
 		
 	}
