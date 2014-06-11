@@ -85,7 +85,6 @@ ActivityInstrumentationTestCase2<MainActivity> {
 //			solo.searchText("blargl");
 //		
 //	}
-
 	private void addDummyUser(String email) {
 		
 	    solo.clickOnActionBarItem(R.id.action_add);
@@ -95,14 +94,40 @@ ActivityInstrumentationTestCase2<MainActivity> {
         solo.sleep(3000);
         //solo.waitForDialogToClose();
 	}
+	
+	
 
 	public void testPreferenceActivity() {
 		solo.assertCurrentActivity("MainActivity", MainActivity.class);
 		solo.clickOnActionBarItem(R.id.action_settings);
-		solo.assertCurrentActivity("SettingsActivity", SettingsActivity.class);
-
+		solo.clickOnText("Vibrate");
+		solo.clickOnText("New message notifications");
+		solo.sleep(2000);
+		boolean checkboxnotify = solo.isCheckBoxChecked(0);
+		boolean checkboxvibrate = solo.isCheckBoxChecked(1);
+		assertFalse(checkboxnotify);
+		assertFalse(checkboxvibrate);
+		solo.clickOnText("New message notifications");
+		solo.clickOnText("Vibrate");
+		solo.sleep(500);
+		checkboxnotify = solo.isCheckBoxChecked(0);
+		checkboxvibrate = solo.isCheckBoxChecked(1);
+		assertTrue(checkboxnotify);
+		assertTrue(checkboxvibrate);
 	}
 
+	
+	public void testContactChanges(){
+		addDummyUser("thisismydummy@user.com");
+		solo.clickOnText("thisismydummy");
+		solo.clickOnActionBarItem(R.id.action_edit);
+		//solo.typeText(0, "blargl");
+		//solo.typeText(0, "arglbla");
+		solo.enterText(0, "dings");
+		solo.searchText("thisismydummydingäääää");
+		
+		
+	}
 	public void testSendMessage() throws InterruptedException {
 		//solo.assertCurrentActivity("ChatActivity", ChatActivity.class);
 		String email = "jupaldupal@gmail.com";

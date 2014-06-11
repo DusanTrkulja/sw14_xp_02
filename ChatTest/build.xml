@@ -88,5 +88,15 @@
     -->
     <!-- version-tag: 1 -->
     <import file="${sdk.dir}/tools/ant/build.xml" />
+    
+    <property name="target.dir" location="target" />
+    <property name="target" location="${target.dir}/classes" />
+    
+    
+    <emma>
+		<instr instrpath="${target}" destdir="${instr.target}" metadatafile="${coverage}/metadata.emma" mode="copy">
+			<filter excludes="android*, com.jeremyfeinstein.slidingmenu.lib*"/>
+		</instr>
+	</emma>
 
 </project>
